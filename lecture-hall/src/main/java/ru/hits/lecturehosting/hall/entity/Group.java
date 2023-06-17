@@ -17,6 +17,7 @@ public class Group {
     @Column(name = "id", nullable = false)
     private UUID id;
 
-
+    @Column(name = "name")
+    private String name;
 
 }

@@ -1,15 +1,18 @@
 package ru.hits.lecturehosting.hall.entity.id;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.UUID;
 
-@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class TagValueId implements Serializable {
 
-    private final UUID tag;
+    private UUID tag;
 
-    private final String value;
+    private String value;
 
 }

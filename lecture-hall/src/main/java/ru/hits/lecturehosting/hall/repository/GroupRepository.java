@@ -6,4 +6,5 @@ import ru.hits.lecturehosting.hall.entity.Group;
 import java.util.UUID;
 
 public interface GroupRepository extends JpaRepository<Group, UUID> {
+
 }

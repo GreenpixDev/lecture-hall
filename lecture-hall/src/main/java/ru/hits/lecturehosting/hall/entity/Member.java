@@ -24,7 +24,7 @@ public class Member {
     @JoinColumn(name = "group_id", nullable = false)
     private Group group;
 
-    @Column(name = "admin")
-    private boolean administrator;
+    @Column(name = "admin", nullable = false)
+    private Boolean administrator;
 
 }
