@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  postgres-hall:
+    image: postgres:latest
+    ports:
+      - '10000:5432'
+    environment:
+      POSTGRES_DB: lecture-hall
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+  postgres-video:
+    image: postgres:latest
+    ports:
+      - '10001:5432'
+    environment:
+      POSTGRES_DB: video
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres

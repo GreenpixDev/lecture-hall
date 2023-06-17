@@ -1,0 +1,26 @@
+server:
+  port: 8000
+  error:
+    # Не включаем stacktrace в http ответ ошибки
+    include-stacktrace: never
+
+logging:
+  level:
+    # Уровень логирования
+    ru.greenpix.messenger: ${LOGGING_LEVEL:info}
+
+spring:
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:10000}/${DB_NAME:lecture-hall}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  flyway:
+    baseline-on-migrate: true
+
+springdoc:
+  swagger-ui:
+    path: /swagger

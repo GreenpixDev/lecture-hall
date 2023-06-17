@@ -9,7 +9,7 @@ import java.util.UUID;
 
 @Getter
 @Setter
-@Table(name = "tag_value")
+@Table(name = "\"tag_value\"")
 @Entity
 @IdClass(TagValueId.class)
 public class TagValue {

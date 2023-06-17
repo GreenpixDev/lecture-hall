@@ -8,9 +8,9 @@ import java.util.UUID;
 
 @Getter
 @Setter
-@Table(name = "record")
+@Table(name = "\"video\"")
 @Entity
-public class Record {
+public class VideoPost {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -9,15 +9,17 @@ import java.util.UUID;
 
 @Getter
 @Setter
-@Table(name = "member")
+@Table(name = "\"member\"")
 @Entity
 @IdClass(MemberId.class)
 public class Member {
 
+    @Id
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @Id
     @ManyToOne
     @JoinColumn(name = "group_id", nullable = false)
     private Group group;

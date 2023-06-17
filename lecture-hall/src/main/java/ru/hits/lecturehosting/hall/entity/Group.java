@@ -8,7 +8,7 @@ import java.util.UUID;
 
 @Getter
 @Setter
-@Table(name = "group")
+@Table(name = "\"group\"")
 @Entity
 public class Group {
 

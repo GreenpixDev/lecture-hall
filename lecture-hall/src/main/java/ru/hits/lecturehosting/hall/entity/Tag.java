@@ -8,7 +8,7 @@ import java.util.UUID;
 
 @Getter
 @Setter
-@Table(name = "tag")
+@Table(name = "\"tag\"")
 @Entity
 public class Tag {
 
