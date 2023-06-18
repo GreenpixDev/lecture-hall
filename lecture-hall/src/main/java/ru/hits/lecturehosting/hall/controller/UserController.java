@@ -8,6 +8,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class UserController {
 
+    @GetMapping("test")
+    public Object test() {
+        return "test";
+    }
+
+
     @GetMapping("ping")
     public Object pingPong(@AuthenticationPrincipal OAuth2User principal) {
         return principal.getAttributes();

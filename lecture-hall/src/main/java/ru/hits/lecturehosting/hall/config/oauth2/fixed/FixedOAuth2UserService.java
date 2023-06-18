@@ -1,4 +1,4 @@
-package ru.hits.lecturehosting.hall.config.oauth2;
+package ru.hits.lecturehosting.hall.config.oauth2.fixed;
 
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.convert.converter.Converter;
@@ -29,7 +29,7 @@ import java.util.Map;
 import java.util.Set;
 
 // https://sysout.ru/single-sign-on-s-postavshhikom-vk/
-public class CustomOAuth2UserService extends DefaultOAuth2UserService {
+public class FixedOAuth2UserService extends DefaultOAuth2UserService {
 
     private final RestOperations restOperations;
     private final Converter<OAuth2UserRequest, RequestEntity<?>> requestEntityConverter = new OAuth2UserRequestEntityConverter();
@@ -39,7 +39,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     private static final ParameterizedTypeReference<Map<String, Object>> PARAMETERIZED_RESPONSE_TYPE =
             new ParameterizedTypeReference<Map<String, Object>>() {
             };
-    public CustomOAuth2UserService() {
+    public FixedOAuth2UserService() {
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.setErrorHandler(new OAuth2ErrorResponseErrorHandler());
         restOperations = restTemplate;

@@ -1,4 +1,4 @@
-package ru.hits.lecturehosting.hall.config.oauth2;
+package ru.hits.lecturehosting.hall.config.oauth2.fixed;
 
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 // https://sysout.ru/single-sign-on-s-postavshhikom-vk/
-public class CustomTokenResponseConverter implements Converter<Map<String, Object>, OAuth2AccessTokenResponse> {
+public class FixedTokenResponseConverter implements Converter<Map<String, Object>, OAuth2AccessTokenResponse> {
 
     @Override
     public OAuth2AccessTokenResponse convert(Map<String, Object> tokenResponseParameters) {
