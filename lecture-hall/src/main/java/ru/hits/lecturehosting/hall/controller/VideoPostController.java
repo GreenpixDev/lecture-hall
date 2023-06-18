@@ -1,0 +1,60 @@
+package ru.hits.lecturehosting.hall.controller;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import ru.hits.lecturehosting.hall.dto.CreationVideoDto;
+import ru.hits.lecturehosting.hall.dto.PageDto;
+import ru.hits.lecturehosting.hall.dto.VideoDto;
+
+import java.util.List;
+import java.util.UUID;
+
+@RestController
+@RequiredArgsConstructor
+public class VideoPostController {
+
+    @GetMapping("groups/{groupId}/videos")
+    public PageDto<VideoDto> getGroupVideos(
+            @PathVariable UUID groupId
+    ) {
+        throw new UnsupportedOperationException(); // TODO
+    }
+
+    @GetMapping("videos/{videoId}")
+    public VideoDto getVideo(
+            @PathVariable UUID videoId
+    ) {
+        throw new UnsupportedOperationException(); // TODO
+    }
+
+    @PostMapping("groups/{groupId}/videos")
+    public void createGroupVideo(
+            @PathVariable UUID groupId,
+            @RequestBody CreationVideoDto dto
+    ) {
+        throw new UnsupportedOperationException(); // TODO
+    }
+
+    @PutMapping("videos/{videoId}")
+    public void updateVideo(
+            @PathVariable UUID videoId,
+            @RequestBody CreationVideoDto dto
+    ) {
+        throw new UnsupportedOperationException(); // TODO
+    }
+
+    @DeleteMapping("videos/{videoId}")
+    public void deleteVideo(
+            @PathVariable UUID videoId,
+            @RequestBody CreationVideoDto dto
+    ) {
+        throw new UnsupportedOperationException(); // TODO
+    }
+}

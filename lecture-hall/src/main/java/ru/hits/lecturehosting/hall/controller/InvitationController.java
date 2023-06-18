@@ -8,67 +8,41 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.hits.lecturehosting.hall.dto.GroupDto;
-import ru.hits.lecturehosting.hall.dto.JoiningGroupDto;
+import ru.hits.lecturehosting.hall.dto.InvitationDto;
 import ru.hits.lecturehosting.hall.dto.MemberDto;
 import ru.hits.lecturehosting.hall.dto.PageDto;
 import ru.hits.lecturehosting.hall.service.GroupService;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("groups")
 @RequiredArgsConstructor
-public class GroupController {
+public class InvitationController {
 
-    private final GroupService groupService;
-
-    @GetMapping
-    public PageDto<GroupDto> getGroups(
-            @AuthenticationPrincipal OAuth2User user
-    ) {
-        throw new UnsupportedOperationException(); // TODO
-    }
-
-    @PostMapping
-    public void createGroup(
-            @AuthenticationPrincipal OAuth2User user
-    ) {
-        throw new UnsupportedOperationException(); // TODO
-    }
-
-    @PutMapping("{groupId}")
-    public void updateGroup(
+    @GetMapping("groups/{groupId}/invitations")
+    public PageDto<InvitationDto> getGroupInvitations(
             @AuthenticationPrincipal OAuth2User user,
             @PathVariable UUID groupId
     ) {
         throw new UnsupportedOperationException(); // TODO
     }
 
-    @DeleteMapping("{groupId}")
-    public void deleteGroup(
+    @PostMapping("groups/{groupId}/invitations")
+    public void createInvitation(
             @AuthenticationPrincipal OAuth2User user,
             @PathVariable UUID groupId
     ) {
         throw new UnsupportedOperationException(); // TODO
     }
 
-    @GetMapping("{groupId}/members")
-    public PageDto<MemberDto> getGroupMembers(
+    @DeleteMapping("groups/{groupId}/invitations/{invitationId}")
+    public void deleteInvitation(
             @AuthenticationPrincipal OAuth2User user,
-            @PathVariable UUID groupId
-    ) {
-        throw new UnsupportedOperationException(); // TODO
-    }
-
-    @PostMapping("joining")
-    public void joinToGroup(
-            @AuthenticationPrincipal OAuth2User user,
-            @RequestBody JoiningGroupDto dto
+            @PathVariable UUID groupId,
+            @PathVariable UUID invitationId
     ) {
         throw new UnsupportedOperationException(); // TODO
     }
