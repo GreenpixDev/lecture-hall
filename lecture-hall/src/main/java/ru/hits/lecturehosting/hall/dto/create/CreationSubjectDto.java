@@ -1,4 +1,4 @@
-package ru.hits.lecturehosting.hall.dto;
+package ru.hits.lecturehosting.hall.dto.create;
 
 import lombok.Data;
 

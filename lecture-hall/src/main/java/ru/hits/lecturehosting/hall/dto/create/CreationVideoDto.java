@@ -1,4 +1,4 @@
-package ru.hits.lecturehosting.hall.dto;
+package ru.hits.lecturehosting.hall.dto.create;
 
 import lombok.Data;
 
@@ -16,6 +16,6 @@ public class CreationVideoDto implements Serializable {
 
     private final UUID subjectId;
 
-    private final Map<String, String> tags;
+    private final Map<String, List<String>> tags;
 
 }

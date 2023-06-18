@@ -9,8 +9,8 @@ import java.util.UUID;
 @Data
 public class TagDto implements Serializable {
 
-    private final String key;
+    private final UUID id;
 
-    private final List<String> values;
+    private final String key;
 
 }
