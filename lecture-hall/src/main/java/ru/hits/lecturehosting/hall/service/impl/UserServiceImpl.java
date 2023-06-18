@@ -8,6 +8,8 @@ import ru.hits.lecturehosting.hall.entity.User;
 import ru.hits.lecturehosting.hall.repository.UserRepository;
 import ru.hits.lecturehosting.hall.service.UserService;
 
+import java.time.LocalDateTime;
+
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -22,6 +24,7 @@ public class UserServiceImpl implements UserService {
         if (!userRepository.existsByVkId(vkId)) {
             User user = new User();
             user.setVkId(vkId);
+            user.setRegistrationDateTime(LocalDateTime.now());
             userRepository.save(user);
         }
     }

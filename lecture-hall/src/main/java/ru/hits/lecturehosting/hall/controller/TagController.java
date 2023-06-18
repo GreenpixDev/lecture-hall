@@ -1,5 +1,7 @@
 package ru.hits.lecturehosting.hall.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,10 +14,13 @@ import ru.hits.lecturehosting.hall.dto.search.SearchTagDto;
 
 import java.util.UUID;
 
+@Tag(name = "tag")
 @RestController
 @RequiredArgsConstructor
 public class TagController {
 
+    @Tag(name = "group")
+    @Operation(summary = "Поиск тегов в группе")
     @PostMapping("groups/{groupId}/tags/search")
     public PageDto<TagDto> getTags(
             @PathVariable UUID groupId,

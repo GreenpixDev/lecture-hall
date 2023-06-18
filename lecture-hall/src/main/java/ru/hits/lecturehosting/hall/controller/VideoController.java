@@ -1,5 +1,7 @@
 package ru.hits.lecturehosting.hall.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,10 +18,13 @@ import ru.hits.lecturehosting.hall.dto.search.SearchVideoDto;
 
 import java.util.UUID;
 
+@Tag(name = "video")
 @RestController
 @RequiredArgsConstructor
-public class VideoPostController {
+public class VideoController {
 
+    @Tag(name = "group")
+    @Operation(summary = "Поиск видео в группе")
     @PostMapping("groups/{groupId}/videos/search")
     public PageDto<VideoDto> getGroupVideos(
             @PathVariable UUID groupId,
@@ -30,6 +35,7 @@ public class VideoPostController {
         throw new UnsupportedOperationException(); // TODO
     }
 
+    @Operation(summary = "Получение информации о видео")
     @GetMapping("videos/{videoId}")
     public VideoDto getVideo(
             @PathVariable UUID videoId
@@ -37,7 +43,9 @@ public class VideoPostController {
         throw new UnsupportedOperationException(); // TODO
     }
 
-    @PostMapping("groups/{groupId}/videos")
+    @Tag(name = "group")
+    @Operation(summary = "Создание видео в группе")
+    @PostMapping("groups/{groupId}/videos/new")
     public void createGroupVideo(
             @PathVariable UUID groupId,
             @RequestBody CreationVideoDto dto
@@ -45,6 +53,7 @@ public class VideoPostController {
         throw new UnsupportedOperationException(); // TODO
     }
 
+    @Operation(summary = "Обновление видео")
     @PutMapping("videos/{videoId}")
     public void updateVideo(
             @PathVariable UUID videoId,
@@ -53,10 +62,10 @@ public class VideoPostController {
         throw new UnsupportedOperationException(); // TODO
     }
 
+    @Operation(summary = "Удаление видео")
     @DeleteMapping("videos/{videoId}")
     public void deleteVideo(
-            @PathVariable UUID videoId,
-            @RequestBody CreationVideoDto dto
+            @PathVariable UUID videoId
     ) {
         throw new UnsupportedOperationException(); // TODO
     }

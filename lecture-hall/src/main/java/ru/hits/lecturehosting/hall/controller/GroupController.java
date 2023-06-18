@@ -1,5 +1,7 @@
 package ru.hits.lecturehosting.hall.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -21,6 +23,7 @@ import ru.hits.lecturehosting.hall.service.GroupService;
 
 import java.util.UUID;
 
+@Tag(name = "group")
 @RestController
 @RequestMapping("groups")
 @RequiredArgsConstructor
@@ -28,6 +31,7 @@ public class GroupController {
 
     private final GroupService groupService;
 
+    @Operation(summary = "Поиск групп")
     @PostMapping("search")
     public PageDto<GroupDto> getGroups(
             @AuthenticationPrincipal OAuth2User user,
@@ -38,7 +42,8 @@ public class GroupController {
         throw new UnsupportedOperationException(); // TODO
     }
 
-    @PostMapping
+    @Operation(summary = "Создание группы")
+    @PostMapping("new")
     public void createGroup(
             @AuthenticationPrincipal OAuth2User user,
             @RequestBody CreationGroupDto dto
@@ -46,6 +51,7 @@ public class GroupController {
         throw new UnsupportedOperationException(); // TODO
     }
 
+    @Operation(summary = "Обновление группы")
     @PutMapping("{groupId}")
     public void updateGroup(
             @AuthenticationPrincipal OAuth2User user,
@@ -55,6 +61,7 @@ public class GroupController {
         throw new UnsupportedOperationException(); // TODO
     }
 
+    @Operation(summary = "Удаление группы")
     @DeleteMapping("{groupId}")
     public void deleteGroup(
             @AuthenticationPrincipal OAuth2User user,
@@ -63,10 +70,23 @@ public class GroupController {
         throw new UnsupportedOperationException(); // TODO
     }
 
-    @PostMapping("joining")
+    @Tag(name = "invitation")
+    @Tag(name = "user")
+    @Operation(summary = "Присоединение к группе по коду приглашения")
+    @PostMapping("entrance")
     public void joinToGroup(
             @AuthenticationPrincipal OAuth2User user,
             @RequestBody JoiningGroupDto dto
+    ) {
+        throw new UnsupportedOperationException(); // TODO
+    }
+
+    @Tag(name = "user")
+    @Operation(summary = "Выйти из группы")
+    @PostMapping("{groupId}/exit")
+    public void quitFromGroup(
+            @AuthenticationPrincipal OAuth2User user,
+            @PathVariable UUID groupId
     ) {
         throw new UnsupportedOperationException(); // TODO
     }

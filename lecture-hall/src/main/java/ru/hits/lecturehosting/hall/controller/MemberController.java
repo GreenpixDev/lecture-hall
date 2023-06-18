@@ -1,5 +1,7 @@
 package ru.hits.lecturehosting.hall.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -18,11 +20,14 @@ import ru.hits.lecturehosting.hall.dto.update.UpdateMemberDto;
 
 import java.util.UUID;
 
+@Tag(name = "group")
+@Tag(name = "member")
 @RestController
 @RequestMapping("groups/{groupId}/members")
 @RequiredArgsConstructor
 public class MemberController {
 
+    @Operation(summary = "Список участников в группе")
     @PostMapping("search")
     public PageDto<MemberDto> getGroupMembers(
             @AuthenticationPrincipal OAuth2User user,
@@ -34,6 +39,7 @@ public class MemberController {
         throw new UnsupportedOperationException(); // TODO
     }
 
+    @Operation(summary = "Обновить участника в группе")
     @PutMapping("{userId}")
     public void updateGroupMembers(
             @AuthenticationPrincipal OAuth2User user,
@@ -44,6 +50,7 @@ public class MemberController {
         throw new UnsupportedOperationException(); // TODO
     }
 
+    @Operation(summary = "Кикнуть участника из группы")
     @DeleteMapping("{userId}")
     public void kickGroupMembers(
             @AuthenticationPrincipal OAuth2User user,

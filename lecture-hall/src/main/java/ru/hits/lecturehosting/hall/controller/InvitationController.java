@@ -1,5 +1,7 @@
 package ru.hits.lecturehosting.hall.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -19,10 +21,13 @@ import ru.hits.lecturehosting.hall.dto.update.UpdateInvitationDto;
 
 import java.util.UUID;
 
+@Tag(name = "invitation")
 @RestController
 @RequiredArgsConstructor
 public class InvitationController {
 
+    @Tag(name = "group")
+    @Operation(summary = "Список приглашений в группе")
     @GetMapping("groups/{groupId}/invitations")
     public PageDto<InvitationDto> getGroupInvitations(
             @AuthenticationPrincipal OAuth2User user,
@@ -33,7 +38,9 @@ public class InvitationController {
         throw new UnsupportedOperationException(); // TODO
     }
 
-    @PostMapping("groups/{groupId}/invitations")
+    @Tag(name = "group")
+    @Operation(summary = "Создание приглашения в группе")
+    @PostMapping("groups/{groupId}/invitations/new")
     public CreatedInvitationDto createInvitation(
             @AuthenticationPrincipal OAuth2User user,
             @PathVariable UUID groupId,
@@ -42,16 +49,18 @@ public class InvitationController {
         throw new UnsupportedOperationException(); // TODO
     }
 
-    @PutMapping("groups/{groupId}/invitations")
+    @Operation(summary = "Обновление приглашения")
+    @PutMapping("invitations/{invitationId}")
     public void updateInvitation(
             @AuthenticationPrincipal OAuth2User user,
-            @PathVariable UUID groupId,
+            @PathVariable UUID invitationId,
             @RequestBody UpdateInvitationDto dto
     ) {
         throw new UnsupportedOperationException(); // TODO
     }
 
-    @DeleteMapping("groups/{groupId}/invitations/{invitationId}")
+    @Operation(summary = "Удаление приглашения")
+    @DeleteMapping("invitations/{invitationId}")
     public void deleteInvitation(
             @AuthenticationPrincipal OAuth2User user,
             @PathVariable UUID groupId,

@@ -37,7 +37,12 @@ public class WebSecurityConfiguration {
                         .authenticationEntryPoint(new HttpStatusSuccessEntryPoint(HttpStatus.UNAUTHORIZED))
                 )
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers("/test", "/", "/login").permitAll()
+                        .requestMatchers(
+                                "/swagger",
+                                "/swagger-ui/**",
+                                "/webjars/**",
+                                "/v3/api-docs/**"
+                        ).permitAll()
                         .anyRequest().authenticated()
                 )
                 .csrf(csrf -> csrf
