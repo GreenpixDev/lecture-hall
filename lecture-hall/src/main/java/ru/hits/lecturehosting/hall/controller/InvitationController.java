@@ -9,18 +9,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.hits.lecturehosting.hall.dto.CreatedInvitationDto;
-import ru.hits.lecturehosting.hall.dto.GroupDto;
 import ru.hits.lecturehosting.hall.dto.InvitationDto;
-import ru.hits.lecturehosting.hall.dto.MemberDto;
 import ru.hits.lecturehosting.hall.dto.PageDto;
 import ru.hits.lecturehosting.hall.dto.create.CreationInvitationDto;
-import ru.hits.lecturehosting.hall.dto.search.SearchGroupDto;
 import ru.hits.lecturehosting.hall.dto.update.UpdateInvitationDto;
-import ru.hits.lecturehosting.hall.service.GroupService;
 
 import java.util.UUID;
 

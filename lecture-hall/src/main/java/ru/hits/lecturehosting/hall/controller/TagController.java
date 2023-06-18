@@ -1,7 +1,6 @@
 package ru.hits.lecturehosting.hall.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -9,9 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.hits.lecturehosting.hall.dto.PageDto;
 import ru.hits.lecturehosting.hall.dto.TagDto;
-import ru.hits.lecturehosting.hall.dto.TagValueDto;
 import ru.hits.lecturehosting.hall.dto.search.SearchTagDto;
-import ru.hits.lecturehosting.hall.dto.search.SearchVideoDto;
 
 import java.util.UUID;
 

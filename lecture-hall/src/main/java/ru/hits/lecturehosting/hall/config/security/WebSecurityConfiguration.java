@@ -18,7 +18,6 @@ import ru.hits.lecturehosting.hall.config.oauth2.OAuth2AuthenticationFailureHand
 import ru.hits.lecturehosting.hall.config.oauth2.OAuth2AuthenticationSuccessHandler;
 import ru.hits.lecturehosting.hall.config.oauth2.fixed.FixedOAuth2UserService;
 import ru.hits.lecturehosting.hall.config.oauth2.fixed.FixedTokenResponseConverter;
-import ru.hits.lecturehosting.hall.repository.UserRepository;
 import ru.hits.lecturehosting.hall.service.UserService;
 
 import java.util.Arrays;

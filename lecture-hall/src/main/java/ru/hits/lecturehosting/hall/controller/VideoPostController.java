@@ -9,10 +9,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import ru.hits.lecturehosting.hall.dto.create.CreationVideoDto;
 import ru.hits.lecturehosting.hall.dto.PageDto;
 import ru.hits.lecturehosting.hall.dto.VideoDto;
-import ru.hits.lecturehosting.hall.dto.search.SearchSubjectDto;
+import ru.hits.lecturehosting.hall.dto.create.CreationVideoDto;
 import ru.hits.lecturehosting.hall.dto.search.SearchVideoDto;
 
 import java.util.UUID;
