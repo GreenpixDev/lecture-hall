@@ -15,6 +15,8 @@ import ru.hits.lecturehosting.hall.dto.PageDto;
 import ru.hits.lecturehosting.hall.dto.VideoDto;
 import ru.hits.lecturehosting.hall.dto.create.CreationVideoDto;
 import ru.hits.lecturehosting.hall.dto.search.SearchVideoDto;
+import ru.hits.lecturehosting.hall.service.GroupService;
+import ru.hits.lecturehosting.hall.service.VideoService;
 
 import java.util.UUID;
 
@@ -22,6 +24,8 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 public class VideoController {
+
+    private final VideoService videoService;
 
     @Tag(name = "group")
     @Operation(summary = "Поиск видео в группе")

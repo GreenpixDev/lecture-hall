@@ -5,5 +5,5 @@ import ru.hits.lecturehosting.hall.entity.Video;
 
 import java.util.UUID;
 
-public interface VideoPostRepository extends JpaRepository<Video, UUID> {
+public interface VideoRepository extends JpaRepository<Video, UUID> {
 }

@@ -17,6 +17,8 @@ import ru.hits.lecturehosting.hall.dto.MemberDto;
 import ru.hits.lecturehosting.hall.dto.PageDto;
 import ru.hits.lecturehosting.hall.dto.search.SearchMemberDto;
 import ru.hits.lecturehosting.hall.dto.update.UpdateMemberDto;
+import ru.hits.lecturehosting.hall.service.GroupService;
+import ru.hits.lecturehosting.hall.service.MemberService;
 
 import java.util.UUID;
 
@@ -26,6 +28,8 @@ import java.util.UUID;
 @RequestMapping("groups/{groupId}/members")
 @RequiredArgsConstructor
 public class MemberController {
+
+    private final MemberService memberService;
 
     @Operation(summary = "Список участников в группе")
     @PostMapping("search")

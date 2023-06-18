@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.hits.lecturehosting.hall.dto.PageDto;
 import ru.hits.lecturehosting.hall.dto.TagDto;
 import ru.hits.lecturehosting.hall.dto.search.SearchTagDto;
+import ru.hits.lecturehosting.hall.service.GroupService;
+import ru.hits.lecturehosting.hall.service.TagService;
 
 import java.util.UUID;
 
@@ -18,6 +20,8 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 public class TagController {
+
+    private final TagService tagService;
 
     @Tag(name = "group")
     @Operation(summary = "Поиск тегов в группе")

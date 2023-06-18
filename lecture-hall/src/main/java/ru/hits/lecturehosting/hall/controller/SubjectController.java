@@ -14,6 +14,7 @@ import ru.hits.lecturehosting.hall.dto.PageDto;
 import ru.hits.lecturehosting.hall.dto.SubjectDto;
 import ru.hits.lecturehosting.hall.dto.create.CreationSubjectDto;
 import ru.hits.lecturehosting.hall.dto.search.SearchSubjectDto;
+import ru.hits.lecturehosting.hall.service.SubjectService;
 
 import java.util.UUID;
 
@@ -21,6 +22,8 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 public class SubjectController {
+
+    private final SubjectService subjectService;
 
     @Tag(name = "group")
     @Operation(summary = "Поиск предметов в группе")

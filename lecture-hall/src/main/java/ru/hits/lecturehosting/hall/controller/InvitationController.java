@@ -18,6 +18,8 @@ import ru.hits.lecturehosting.hall.dto.InvitationDto;
 import ru.hits.lecturehosting.hall.dto.PageDto;
 import ru.hits.lecturehosting.hall.dto.create.CreationInvitationDto;
 import ru.hits.lecturehosting.hall.dto.update.UpdateInvitationDto;
+import ru.hits.lecturehosting.hall.service.GroupService;
+import ru.hits.lecturehosting.hall.service.InvitationService;
 
 import java.util.UUID;
 
@@ -25,6 +27,8 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 public class InvitationController {
+
+    private final InvitationService invitationService;
 
     @Tag(name = "group")
     @Operation(summary = "Список приглашений в группе")
