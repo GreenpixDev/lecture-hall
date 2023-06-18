@@ -9,6 +9,7 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
@@ -24,5 +25,8 @@ public class Group {
 
     @Column(name = "name")
     private String name;
+
+    @Column(name = "creation", nullable = false)
+    private LocalDateTime creationDateTime;
 
 }

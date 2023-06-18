@@ -11,6 +11,8 @@ import lombok.Getter;
 import lombok.Setter;
 import ru.hits.lecturehosting.hall.entity.id.MemberId;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @Table(name = "\"member\"")
@@ -30,5 +32,8 @@ public class Member {
 
     @Column(name = "admin", nullable = false)
     private Boolean administrator;
+
+    @Column(name = "joining", nullable = false)
+    private LocalDateTime joiningDateTime;
 
 }

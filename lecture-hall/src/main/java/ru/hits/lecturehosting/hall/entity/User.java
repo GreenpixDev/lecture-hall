@@ -9,6 +9,7 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
@@ -24,5 +25,8 @@ public class User {
 
     @Column(name = "vk_id", nullable = false, unique = true)
     private Integer vkId;
+
+    @Column(name = "registration", nullable = false)
+    private LocalDateTime registrationDateTime;
 
 }

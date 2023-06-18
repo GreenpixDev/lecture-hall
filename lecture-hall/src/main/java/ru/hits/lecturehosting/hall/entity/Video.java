@@ -16,9 +16,9 @@ import java.util.UUID;
 
 @Getter
 @Setter
-@Table(name = "\"tag\"")
+@Table(name = "\"video\"")
 @Entity
-public class Tag {
+public class Video {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -29,7 +29,17 @@ public class Tag {
     @JoinColumn(name = "group_id", nullable = false)
     private Group group;
 
-    @Column(name = "name", nullable = false, unique = true)
-    private String name;
+    @ManyToOne
+    @JoinColumn(name = "subject_id", nullable = false)
+    private Subject subject;
+
+    @Column(name = "title", nullable = false)
+    private String title;
+
+    @Column(name = "description")
+    private String description;
+
+    @Column(name = "publication", nullable = false)
+    private LocalDateTime publicationDateTime;
 
 }
