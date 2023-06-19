@@ -1,17 +1,22 @@
 package ru.hits.lecturehosting.hall.dto.update;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-@Data
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class UpdateInvitationDto implements Serializable {
 
-    private final String name;
+    private String name;
 
-    private final int usageLimit;
+    private int usageLimit;
 
-    private final LocalDateTime expirationDateTime;
+    private LocalDateTime expirationDateTime;
 
 }

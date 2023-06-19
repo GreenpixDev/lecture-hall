@@ -1,12 +1,17 @@
 package ru.hits.lecturehosting.hall.dto.search;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
-@Data
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class SearchTagDto implements Serializable {
 
-    private final String nameFilter;
+    private String nameFilter;
 
 }

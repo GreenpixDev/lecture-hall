@@ -2,6 +2,7 @@ package ru.hits.lecturehosting.hall.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.hits.lecturehosting.hall.entity.User;
@@ -18,14 +19,15 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void saveUserIfNotExists(OAuth2AuthenticationToken token) {
-        Integer vkId = token.getPrincipal().getAttribute("id");
+    public User saveUserIfNotExists(OAuth2User oAuth2User) {
+        Integer vkId = oAuth2User.getAttribute("id");
+        return userRepository.findByVkId(vkId).orElseGet(() -> createUser(vkId));
+    }
 
-        if (!userRepository.existsByVkId(vkId)) {
-            User user = new User();
-            user.setVkId(vkId);
-            user.setRegistrationDateTime(LocalDateTime.now());
-            userRepository.save(user);
-        }
+    private User createUser(Integer vkId) {
+        User user = new User();
+        user.setVkId(vkId);
+        user.setRegistrationDateTime(LocalDateTime.now());
+        return userRepository.save(user);
     }
 }

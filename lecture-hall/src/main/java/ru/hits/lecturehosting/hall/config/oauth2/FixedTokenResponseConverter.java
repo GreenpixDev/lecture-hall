@@ -1,4 +1,4 @@
-package ru.hits.lecturehosting.hall.config.oauth2.fixed;
+package ru.hits.lecturehosting.hall.config.oauth2;
 
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;

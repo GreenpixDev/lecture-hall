@@ -8,16 +8,22 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Getter
-@Setter
 @Table(name = "\"video\"")
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Video {
 
     @Id
@@ -39,7 +45,11 @@ public class Video {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "publication", nullable = false)
-    private LocalDateTime publicationDateTime;
+    @Column(name = "creation", nullable = false)
+    @Builder.Default
+    private LocalDateTime creationDateTime = LocalDateTime.now();
+
+    @Column(name = "recording", nullable = false)
+    private LocalDateTime recordingDateTime;
 
 }

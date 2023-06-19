@@ -19,6 +19,7 @@ import ru.hits.lecturehosting.hall.dto.search.SearchMemberDto;
 import ru.hits.lecturehosting.hall.dto.update.UpdateMemberDto;
 import ru.hits.lecturehosting.hall.service.GroupService;
 import ru.hits.lecturehosting.hall.service.MemberService;
+import ru.hits.lecturehosting.hall.util.UserPrincipal;
 
 import java.util.UUID;
 
@@ -34,33 +35,33 @@ public class MemberController {
     @Operation(summary = "Список участников в группе")
     @PostMapping("search")
     public PageDto<MemberDto> getGroupMembers(
-            @AuthenticationPrincipal OAuth2User user,
+            @AuthenticationPrincipal UserPrincipal user,
             @PathVariable UUID groupId,
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "count", defaultValue = "20") int count,
             @RequestBody SearchMemberDto dto
     ) {
-        throw new UnsupportedOperationException(); // TODO
+        return memberService.getGroupMembers(user, groupId, page - 1, count, dto);
     }
 
     @Operation(summary = "Обновить участника в группе")
     @PutMapping("{userId}")
     public void updateGroupMembers(
-            @AuthenticationPrincipal OAuth2User user,
+            @AuthenticationPrincipal UserPrincipal user,
             @PathVariable UUID groupId,
             @PathVariable UUID userId,
             @RequestBody UpdateMemberDto dto
     ) {
-        throw new UnsupportedOperationException(); // TODO
+        memberService.updateGroupMember(user, groupId, userId, dto);
     }
 
     @Operation(summary = "Кикнуть участника из группы")
     @DeleteMapping("{userId}")
     public void kickGroupMembers(
-            @AuthenticationPrincipal OAuth2User user,
+            @AuthenticationPrincipal UserPrincipal user,
             @PathVariable UUID groupId,
             @PathVariable UUID userId
     ) {
-        throw new UnsupportedOperationException(); // TODO
+        memberService.kickGroupMember(user, groupId, userId);
     }
 }

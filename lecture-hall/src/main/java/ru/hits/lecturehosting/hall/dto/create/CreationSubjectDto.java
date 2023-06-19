@@ -1,12 +1,17 @@
 package ru.hits.lecturehosting.hall.dto.create;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
-@Data
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class CreationSubjectDto implements Serializable {
 
-    private final String name;
+    private String name;
 
 }

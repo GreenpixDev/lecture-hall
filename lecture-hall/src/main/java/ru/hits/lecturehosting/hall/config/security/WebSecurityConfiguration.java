@@ -14,10 +14,8 @@ import org.springframework.security.oauth2.core.http.converter.OAuth2AccessToken
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.web.client.RestTemplate;
-import ru.hits.lecturehosting.hall.config.oauth2.OAuth2AuthenticationFailureHandler;
-import ru.hits.lecturehosting.hall.config.oauth2.OAuth2AuthenticationSuccessHandler;
-import ru.hits.lecturehosting.hall.config.oauth2.fixed.FixedOAuth2UserService;
-import ru.hits.lecturehosting.hall.config.oauth2.fixed.FixedTokenResponseConverter;
+import ru.hits.lecturehosting.hall.config.oauth2.FixedOAuth2UserService;
+import ru.hits.lecturehosting.hall.config.oauth2.FixedTokenResponseConverter;
 import ru.hits.lecturehosting.hall.service.UserService;
 
 import java.util.Arrays;
@@ -29,8 +27,7 @@ public class WebSecurityConfiguration {
     public SecurityFilterChain securityWebFilterChain(
             HttpSecurity http,
             ClientRegistrationRepository clientRegistrationRepository,
-            OAuth2AuthenticationSuccessHandler successHandler,
-            OAuth2AuthenticationFailureHandler failureHandler
+            UserService userService
     ) throws Exception {
         return http
                 .exceptionHandling(exceptionHandling -> exceptionHandling
@@ -45,18 +42,22 @@ public class WebSecurityConfiguration {
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
+                /*.cors(cors -> cors
+                        .disable()
+                )*/
                 .csrf(csrf -> csrf
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                        .disable() // TODO убрать
                 )
                 .oauth2Login(oauth2Login -> oauth2Login
                         .tokenEndpoint(tokenEndpoint -> tokenEndpoint
                                 .accessTokenResponseClient(accessTokenResponseClient())
                         )
                         .userInfoEndpoint(userInfoEndpoint -> userInfoEndpoint
-                                .userService(new FixedOAuth2UserService())
+                                .userService(new FixedOAuth2UserService(userService))
                         )
-                        .successHandler(successHandler)
-                        .failureHandler(failureHandler)
+                        .defaultSuccessUrl("http://localhost:8000/swagger")
+                        .failureUrl("http://localhost:8000/failure")
                 )
                 .build();
     }
@@ -75,15 +76,4 @@ public class WebSecurityConfiguration {
         return accessTokenResponseClient;
     }
 
-    @Bean
-    public OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler(
-            UserService userService
-    ) {
-        return new OAuth2AuthenticationSuccessHandler("http://localhost", userService);
-    }
-
-    @Bean
-    public OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler() {
-        return new OAuth2AuthenticationFailureHandler("http://localhost/failure");
-    }
 }

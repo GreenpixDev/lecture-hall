@@ -7,17 +7,23 @@ import jakarta.persistence.IdClass;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.hits.lecturehosting.hall.entity.id.MemberId;
 
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
 @Table(name = "\"member\"")
 @Entity
 @IdClass(MemberId.class)
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Member {
 
     @Id
@@ -31,9 +37,10 @@ public class Member {
     private Group group;
 
     @Column(name = "admin", nullable = false)
-    private Boolean administrator;
+    private boolean administrator;
 
     @Column(name = "joining", nullable = false)
-    private LocalDateTime joiningDateTime;
+    @Builder.Default
+    private LocalDateTime joiningDateTime = LocalDateTime.now();
 
 }

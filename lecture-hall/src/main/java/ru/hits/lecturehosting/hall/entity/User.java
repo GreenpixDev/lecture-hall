@@ -6,16 +6,22 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Getter
-@Setter
 @Table(name = "\"user\"")
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class User {
 
     @Id
@@ -27,6 +33,7 @@ public class User {
     private Integer vkId;
 
     @Column(name = "registration", nullable = false)
-    private LocalDateTime registrationDateTime;
+    @Builder.Default
+    private LocalDateTime registrationDateTime = LocalDateTime.now();
 
 }

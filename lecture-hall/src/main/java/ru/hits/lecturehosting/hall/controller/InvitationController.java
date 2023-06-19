@@ -20,6 +20,7 @@ import ru.hits.lecturehosting.hall.dto.create.CreationInvitationDto;
 import ru.hits.lecturehosting.hall.dto.update.UpdateInvitationDto;
 import ru.hits.lecturehosting.hall.service.GroupService;
 import ru.hits.lecturehosting.hall.service.InvitationService;
+import ru.hits.lecturehosting.hall.util.UserPrincipal;
 
 import java.util.UUID;
 
@@ -34,42 +35,41 @@ public class InvitationController {
     @Operation(summary = "Список приглашений в группе")
     @GetMapping("groups/{groupId}/invitations")
     public PageDto<InvitationDto> getGroupInvitations(
-            @AuthenticationPrincipal OAuth2User user,
+            @AuthenticationPrincipal UserPrincipal user,
             @PathVariable UUID groupId,
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "count", defaultValue = "20") int count
     ) {
-        throw new UnsupportedOperationException(); // TODO
+        return invitationService.getGroupInvitations(user, groupId, page - 1, count);
     }
 
     @Tag(name = "group")
     @Operation(summary = "Создание приглашения в группе")
     @PostMapping("groups/{groupId}/invitations/new")
     public CreatedInvitationDto createInvitation(
-            @AuthenticationPrincipal OAuth2User user,
+            @AuthenticationPrincipal UserPrincipal user,
             @PathVariable UUID groupId,
             @RequestBody CreationInvitationDto dto
     ) {
-        throw new UnsupportedOperationException(); // TODO
+        return invitationService.createGroupInvitation(user, groupId, dto);
     }
 
     @Operation(summary = "Обновление приглашения")
     @PutMapping("invitations/{invitationId}")
     public void updateInvitation(
-            @AuthenticationPrincipal OAuth2User user,
+            @AuthenticationPrincipal UserPrincipal user,
             @PathVariable UUID invitationId,
             @RequestBody UpdateInvitationDto dto
     ) {
-        throw new UnsupportedOperationException(); // TODO
+        invitationService.updateInvitation(user, invitationId, dto);
     }
 
     @Operation(summary = "Удаление приглашения")
     @DeleteMapping("invitations/{invitationId}")
     public void deleteInvitation(
-            @AuthenticationPrincipal OAuth2User user,
-            @PathVariable UUID groupId,
+            @AuthenticationPrincipal UserPrincipal user,
             @PathVariable UUID invitationId
     ) {
-        throw new UnsupportedOperationException(); // TODO
+        invitationService.deleteInvitation(user, invitationId);
     }
 }

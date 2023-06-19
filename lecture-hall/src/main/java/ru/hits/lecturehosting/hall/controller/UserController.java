@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.hits.lecturehosting.hall.dto.UserDto;
 import ru.hits.lecturehosting.hall.service.GroupService;
 import ru.hits.lecturehosting.hall.service.UserService;
+import ru.hits.lecturehosting.hall.util.UserPrincipal;
 
 @Tag(name = "user")
 @RestController
@@ -23,7 +24,7 @@ public class UserController {
     @Operation(summary = "Информация о себе")
     @GetMapping("me")
     public UserDto getAboutMe(
-            @AuthenticationPrincipal OAuth2User user
+            @AuthenticationPrincipal UserPrincipal user
     ) {
         throw new UnsupportedOperationException(); // TODO
     }

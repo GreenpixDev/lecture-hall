@@ -1,4 +1,4 @@
-package ru.hits.lecturehosting.hall.config.oauth2.fixed;
+package ru.hits.lecturehosting.hall.config.oauth2;
 
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.convert.converter.Converter;
@@ -22,6 +22,9 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestOperations;
 import org.springframework.web.client.RestTemplate;
+import ru.hits.lecturehosting.hall.entity.User;
+import ru.hits.lecturehosting.hall.service.UserService;
+import ru.hits.lecturehosting.hall.util.UserPrincipal;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -32,20 +35,28 @@ import java.util.Set;
 public class FixedOAuth2UserService extends DefaultOAuth2UserService {
 
     private final RestOperations restOperations;
+    private final UserService userService;
     private final Converter<OAuth2UserRequest, RequestEntity<?>> requestEntityConverter = new OAuth2UserRequestEntityConverter();
     private static final String MISSING_USER_INFO_URI_ERROR_CODE = "missing_user_info_uri";
     private static final String MISSING_USER_NAME_ATTRIBUTE_ERROR_CODE = "missing_user_name_attribute";
     private static final String INVALID_USER_INFO_RESPONSE_ERROR_CODE = "invalid_user_info_response";
-    private static final ParameterizedTypeReference<Map<String, Object>> PARAMETERIZED_RESPONSE_TYPE =
-            new ParameterizedTypeReference<Map<String, Object>>() {
-            };
-    public FixedOAuth2UserService() {
+    private static final ParameterizedTypeReference<Map<String, Object>> PARAMETERIZED_RESPONSE_TYPE = new ParameterizedTypeReference<>() {};
+
+    public FixedOAuth2UserService(UserService userService) {
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.setErrorHandler(new OAuth2ErrorResponseErrorHandler());
         restOperations = restTemplate;
+        this.userService = userService;
     }
+
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
+        OAuth2User oAuth2User = parseOAuth2User(userRequest);
+        User user = userService.saveUserIfNotExists(oAuth2User);
+        return UserPrincipal.create(user, oAuth2User);
+    }
+
+    private OAuth2User parseOAuth2User(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2User oAuth2User;
         if (!userRequest.getClientRegistration().getRegistrationId().equals("vk")) {
             oAuth2User = super.loadUser(userRequest);

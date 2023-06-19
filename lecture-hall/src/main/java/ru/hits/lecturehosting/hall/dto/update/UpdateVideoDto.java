@@ -1,21 +1,26 @@
 package ru.hits.lecturehosting.hall.dto.update;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-@Data
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class UpdateVideoDto implements Serializable {
 
-    private final String title;
+    private String title;
 
-    private final String description;
+    private String description;
 
-    private final UUID subjectId;
+    private UUID subjectId;
 
-    private final Map<String, List<String>> tags;
+    private Map<String, List<String>> tags;
 
 }
