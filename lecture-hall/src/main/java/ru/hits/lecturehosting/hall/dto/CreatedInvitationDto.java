@@ -8,7 +8,7 @@ import java.io.Serializable;
 @Data
 public class CreatedInvitationDto implements Serializable {
 
-    @Schema(name = "Сгенерированный код приглашения в группу")
+    @Schema(description = "Сгенерированный код приглашения в группу")
     private final String generatedCode;
 
 }

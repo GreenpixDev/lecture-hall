@@ -18,16 +18,16 @@ public class VideoDto implements Serializable {
 
     private final String description;
 
-    @Schema(name = "Дата создании видео (публикации его на сайт)")
+    @Schema(description = "Дата создании видео (публикации его на сайт)")
     private final LocalDateTime creationDateTime;
 
-    @Schema(name = "Дата записи лекции")
+    @Schema(description = "Дата записи лекции")
     private final LocalDateTime recordingDateTime;
 
-    @Schema(name = "Используемые теги и используемые значения тегов в видео")
+    @Schema(description = "Используемые теги и используемые значения тегов в видео")
     private final List<TagDto> tags;
 
-    @Schema(name = "Ссылка на VK видеоплеер")
+    @Schema(description = "Ссылка на VK видеоплеер")
     private final String playerUrl;
 
 }

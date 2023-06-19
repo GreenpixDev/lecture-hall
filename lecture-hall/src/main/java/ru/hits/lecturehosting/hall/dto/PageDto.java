@@ -9,22 +9,22 @@ import java.util.List;
 @Data
 public class PageDto<T> implements Serializable {
 
-    @Schema(name = "Номер страницы")
+    @Schema(description = "Номер страницы")
     private final int pageNumber;
 
-    @Schema(name = "Размер страницы")
+    @Schema(description = "Размер страницы")
     private final int pageSize;
 
-    @Schema(name = "Количество элементов на странице")
+    @Schema(description = "Количество элементов на странице")
     private final int numberOfElements;
 
-    @Schema(name = "Всего страниц")
+    @Schema(description = "Всего страниц")
     private final int totalPages;
 
-    @Schema(name = "Всего элементов")
+    @Schema(description = "Всего элементов")
     private final long totalElements;
 
-    @Schema(name = "Элементы страницы")
+    @Schema(description = "Элементы страницы")
     private final List<T> content;
 
 }

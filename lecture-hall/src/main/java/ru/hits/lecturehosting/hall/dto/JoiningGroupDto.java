@@ -8,7 +8,7 @@ import java.io.Serializable;
 @Data
 public class JoiningGroupDto implements Serializable {
 
-    @Schema(name = "Код приглашения в группу")
+    @Schema(description = "Код приглашения в группу")
     private final String invitationCode;
 
 }

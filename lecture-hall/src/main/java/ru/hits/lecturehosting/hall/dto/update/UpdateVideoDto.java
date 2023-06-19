@@ -1,9 +1,11 @@
 package ru.hits.lecturehosting.hall.dto.update;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import ru.hits.lecturehosting.hall.dto.TagDto;
 
 import java.io.Serializable;
 import java.util.List;
@@ -21,6 +23,7 @@ public class UpdateVideoDto implements Serializable {
 
     private UUID subjectId;
 
-    private Map<String, List<String>> tags;
+    @Schema(description = "Используемые теги и используемые значения тегов в видео")
+    private List<TagDto> tags;
 
 }

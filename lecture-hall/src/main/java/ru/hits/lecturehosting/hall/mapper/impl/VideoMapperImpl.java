@@ -7,6 +7,7 @@ import ru.hits.lecturehosting.hall.dto.update.UpdateVideoDto;
 import ru.hits.lecturehosting.hall.entity.Video;
 import ru.hits.lecturehosting.hall.mapper.VideoMapper;
 
+import java.util.List;
 import java.util.Map;
 
 @Component
@@ -20,7 +21,7 @@ public class VideoMapperImpl implements VideoMapper {
                 video.getDescription(),
                 video.getCreationDateTime(),
                 video.getRecordingDateTime(),
-                Map.of(), // TODO
+                List.of(), // TODO
                 video.getPlayerUrl()
         );
     }

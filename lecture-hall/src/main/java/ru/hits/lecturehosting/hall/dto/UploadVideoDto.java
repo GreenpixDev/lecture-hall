@@ -8,7 +8,7 @@ import java.io.Serializable;
 @Data
 public class UploadVideoDto implements Serializable {
 
-    @Schema(name = "Ссылка для загрузки файла видео")
+    @Schema(description = "Ссылка для загрузки файла видео")
     private final String uploadUrl;
 
 }
