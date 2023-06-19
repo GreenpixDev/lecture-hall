@@ -17,7 +17,9 @@ public class VideoDto implements Serializable {
 
     private final String description;
 
-    private final LocalDateTime publicationDateTime;
+    private final LocalDateTime creationDateTime;
+
+    private final LocalDateTime recordingDateTime;
 
     private final Map<String, List<String>> tags;
 

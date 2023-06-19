@@ -26,7 +26,7 @@ public class UserController {
     public UserDto getAboutMe(
             @AuthenticationPrincipal UserPrincipal user
     ) {
-        throw new UnsupportedOperationException(); // TODO
+        return userService.getUser(user);
     }
 
 }

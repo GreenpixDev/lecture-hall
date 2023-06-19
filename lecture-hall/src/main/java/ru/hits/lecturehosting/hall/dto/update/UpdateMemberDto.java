@@ -12,6 +12,6 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class UpdateMemberDto implements Serializable {
 
-    private boolean administration;
+    private Boolean administration;
 
 }

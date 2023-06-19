@@ -12,6 +12,4 @@ public class UserDto implements Serializable {
 
     private final Integer vkId;
 
-    private final String firstName;
-
 }

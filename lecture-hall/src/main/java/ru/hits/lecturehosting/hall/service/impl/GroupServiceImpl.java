@@ -17,10 +17,12 @@ import ru.hits.lecturehosting.hall.entity.id.MemberId;
 import ru.hits.lecturehosting.hall.exception.GroupForbiddenException;
 import ru.hits.lecturehosting.hall.exception.GroupNotFoundException;
 import ru.hits.lecturehosting.hall.exception.UnauthorizedException;
+import ru.hits.lecturehosting.hall.mapper.GroupMapper;
 import ru.hits.lecturehosting.hall.mapper.PageMapper;
 import ru.hits.lecturehosting.hall.repository.GroupRepository;
 import ru.hits.lecturehosting.hall.repository.MemberRepository;
 import ru.hits.lecturehosting.hall.repository.UserRepository;
+import ru.hits.lecturehosting.hall.service.GroupPermissionService;
 import ru.hits.lecturehosting.hall.service.GroupService;
 import ru.hits.lecturehosting.hall.util.UserPrincipal;
 
@@ -36,30 +38,33 @@ public class GroupServiceImpl implements GroupService {
     private final UserRepository userRepository;
 
     private final PageMapper pageMapper;
+    private final GroupMapper groupMapper;
+
+    private final GroupPermissionService groupPermissionService;
 
     @Override
     public PageDto<GroupDto> getGroups(UserPrincipal principal, int page, int size, SearchGroupDto dto) {
         // TODO query
         return pageMapper.toDto(groupRepository.findAll(PageRequest.of(page, size))
-                .map(g -> new GroupDto(g.getId(), g.getName()))
+                .map(groupMapper::toDto)
         );
     }
 
     @Transactional
     @Override
     public void createGroup(UserPrincipal principal, CreationGroupDto dto) {
-        User user = userRepository.findById(principal.getId())
+        User owner = userRepository.findById(principal.getId())
                 .orElseThrow(UnauthorizedException::new);
-        Member member = Member.builder()
-                .user(user)
+
+        Group group = groupMapper.toEntity(dto);
+        group.setOwner(owner);
+        group.setMembers(Set.of(Member.builder()
+                .user(owner)
+                .group(group)
                 .administrator(true)
-                .build();
-        Group group = Group.builder()
-                .owner(user)
-                .name(dto.getName())
-                .members(Set.of(member))
-                .build();
-        member.setGroup(group);
+                .build()
+        ));
+
         groupRepository.save(group);
     }
 
@@ -69,16 +74,15 @@ public class GroupServiceImpl implements GroupService {
         Group group = groupRepository.findById(groupId)
                 .orElseThrow(GroupNotFoundException::new);
 
-        checkAdminPermission(principal, groupId);
+        groupPermissionService.checkAdminPermission(principal, group);
 
-        group.setName(dto.getName());
-        groupRepository.save(group);
+        groupRepository.save(groupMapper.partialUpdate(dto, group));
     }
 
     @Transactional
     @Override
     public void deleteGroup(UserPrincipal principal, UUID groupId) {
-        checkAdminPermission(principal, groupId);
+        groupPermissionService.checkAdminPermission(principal, groupId);
 
         groupRepository.deleteById(groupId);
     }
@@ -96,11 +100,5 @@ public class GroupServiceImpl implements GroupService {
             throw new GroupForbiddenException();
         }
         memberRepository.deleteById(new MemberId(principal.getId(), groupId));
-    }
-
-    private void checkAdminPermission(UserPrincipal principal, UUID groupId) {
-        memberRepository.findById(new MemberId(principal.getId(), groupId))
-                .filter(Member::isAdministrator)
-                .orElseThrow(GroupForbiddenException::new);
     }
 }

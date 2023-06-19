@@ -13,8 +13,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class CreationInvitationDto implements Serializable {
 
-    private String name;
-
     private int usageLimit;
 
     private LocalDateTime expirationDateTime;

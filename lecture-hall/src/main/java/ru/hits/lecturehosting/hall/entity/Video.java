@@ -52,4 +52,7 @@ public class Video {
     @Column(name = "recording", nullable = false)
     private LocalDateTime recordingDateTime;
 
+    @Column(name = "player_url")
+    private String playerUrl;
+
 }

@@ -43,7 +43,8 @@ public class Invitation {
     private LocalDateTime creationDateTime = LocalDateTime.now();
 
     @Column(name = "usages", nullable = false)
-    private Integer usages;
+    @Builder.Default
+    private Integer usages = 0;
 
     @Column(name = "usage_limit")
     private Integer usageLimit;
