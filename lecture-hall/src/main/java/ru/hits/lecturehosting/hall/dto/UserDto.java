@@ -1,5 +1,6 @@
 package ru.hits.lecturehosting.hall.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -10,6 +11,7 @@ public class UserDto implements Serializable {
 
     private final UUID id;
 
+    @Schema(name = "Идентификатор пользователя в VK")
     private final Integer vkId;
 
 }
