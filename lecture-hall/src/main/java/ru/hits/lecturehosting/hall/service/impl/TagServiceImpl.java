@@ -31,9 +31,10 @@ public class TagServiceImpl implements TagService {
     @Override
     public PageDto<TagDto> getGroupTags(UserPrincipal principal, UUID groupId, int page, int size, SearchTagDto dto) {
         groupPermissionService.checkPermission(principal, groupId);
-        // TODO query
-        return pageMapper.toDto(tagRepository.findAll(PageRequest.of(page, size))
-                .map(tagMapper::toDto)
-        );
+        return pageMapper.toDto(tagRepository.searchAll(
+                principal.getId(),
+                // TODO "%" + dto.getNameFilter() + "%",
+                PageRequest.of(page, size)
+        ).map(tagMapper::toDto));
     }
 }

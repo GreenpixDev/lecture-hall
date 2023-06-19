@@ -17,6 +17,7 @@ import ru.hits.lecturehosting.hall.dto.UploadVideoDto;
 import ru.hits.lecturehosting.hall.dto.VideoDto;
 import ru.hits.lecturehosting.hall.dto.create.CreationVideoDto;
 import ru.hits.lecturehosting.hall.dto.search.SearchVideoDto;
+import ru.hits.lecturehosting.hall.dto.update.UpdateVideoDto;
 import ru.hits.lecturehosting.hall.service.GroupService;
 import ru.hits.lecturehosting.hall.service.VideoService;
 import ru.hits.lecturehosting.hall.util.UserPrincipal;
@@ -40,7 +41,7 @@ public class VideoController {
             @RequestParam(value = "count", defaultValue = "20") int count,
             @RequestBody SearchVideoDto dto
     ) {
-        throw new UnsupportedOperationException(); // TODO
+        return videoService.getGroupVideos(user, groupId, page, count, dto);
     }
 
     @Operation(summary = "Получение информации о видео")
@@ -49,7 +50,7 @@ public class VideoController {
             @AuthenticationPrincipal UserPrincipal user,
             @PathVariable UUID videoId
     ) {
-        throw new UnsupportedOperationException(); // TODO
+        return videoService.getVideo(user, videoId);
     }
 
     @Tag(name = "group")
@@ -60,7 +61,7 @@ public class VideoController {
             @PathVariable UUID groupId,
             @RequestBody CreationVideoDto dto
     ) {
-        throw new UnsupportedOperationException(); // TODO
+        return videoService.createGroupVideo(user, groupId, dto);
     }
 
     @Operation(summary = "Обновление видео")
@@ -68,9 +69,9 @@ public class VideoController {
     public void updateVideo(
             @AuthenticationPrincipal UserPrincipal user,
             @PathVariable UUID videoId,
-            @RequestBody CreationVideoDto dto
+            @RequestBody UpdateVideoDto dto
     ) {
-        throw new UnsupportedOperationException(); // TODO
+        videoService.updateVideo(user, videoId, dto);
     }
 
     @Operation(summary = "Удаление видео")
@@ -79,6 +80,6 @@ public class VideoController {
             @AuthenticationPrincipal UserPrincipal user,
             @PathVariable UUID videoId
     ) {
-        throw new UnsupportedOperationException(); // TODO
+        videoService.deleteVideo(user, videoId);
     }
 }

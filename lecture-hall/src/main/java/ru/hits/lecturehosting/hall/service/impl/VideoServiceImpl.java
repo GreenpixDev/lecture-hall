@@ -43,10 +43,12 @@ public class VideoServiceImpl implements VideoService {
     @Override
     public PageDto<VideoDto> getGroupVideos(UserPrincipal principal, UUID groupId, int page, int size, SearchVideoDto dto) {
         groupPermissionService.checkPermission(principal, groupId);
-        // TODO query
-        return pageMapper.toDto(videoRepository.findAll(PageRequest.of(page, size))
-                .map(videoMapper::toDto)
-        );
+        return pageMapper.toDto(videoRepository.searchAll(
+                principal.getId(),
+                // TODO query
+                "%" + dto.getTextFilter() + "%",
+                PageRequest.of(page, size)
+        ).map(videoMapper::toDto));
     }
 
     @Override

@@ -43,10 +43,10 @@ public class InvitationServiceImpl implements InvitationService {
     @Override
     public PageDto<InvitationDto> getGroupInvitations(UserPrincipal principal, UUID groupId, int page, int size) {
         groupPermissionService.checkAdminPermission(principal, groupId);
-        // TODO query
-        return pageMapper.toDto(invitationRepository.findAll(PageRequest.of(page, size))
-                .map(invitationMapper::toDto)
-        );
+        return pageMapper.toDto(invitationRepository.searchAll(
+                principal.getId(),
+                PageRequest.of(page, size)
+        ).map(invitationMapper::toDto));
     }
 
     @Override

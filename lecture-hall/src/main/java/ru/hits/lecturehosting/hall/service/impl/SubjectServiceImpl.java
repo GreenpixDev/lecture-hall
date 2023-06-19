@@ -41,10 +41,11 @@ public class SubjectServiceImpl implements SubjectService {
     @Override
     public PageDto<SubjectDto> getGroupSubjects(UserPrincipal principal, UUID groupId, int page, int size, SearchSubjectDto dto) {
         groupPermissionService.checkPermission(principal, groupId);
-        // TODO query
-        return pageMapper.toDto(subjectRepository.findAll(PageRequest.of(page, size))
-                .map(subjectMapper::toDto)
-        );
+        return pageMapper.toDto(subjectRepository.searchAll(
+                principal.getId(),
+                "%" + dto.getNameFilter() + "%",
+                PageRequest.of(page, size)
+        ).map(subjectMapper::toDto));
     }
 
     @Transactional

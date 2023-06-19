@@ -38,10 +38,10 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public PageDto<MemberDto> getGroupMembers(UserPrincipal principal, UUID groupId, int page, int size, SearchMemberDto dto) {
         groupPermissionService.checkPermission(principal, groupId);
-        // TODO query
-        return pageMapper.toDto(memberRepository.findAll(PageRequest.of(page, size))
-                .map(memberMapper::toDto)
-        );
+        return pageMapper.toDto(memberRepository.searchAll(
+                principal.getId(),
+                PageRequest.of(page, size)
+        ).map(memberMapper::toDto));
     }
 
     @Transactional

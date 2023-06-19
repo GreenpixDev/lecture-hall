@@ -44,10 +44,11 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public PageDto<GroupDto> getGroups(UserPrincipal principal, int page, int size, SearchGroupDto dto) {
-        // TODO query
-        return pageMapper.toDto(groupRepository.findAll(PageRequest.of(page, size))
-                .map(groupMapper::toDto)
-        );
+        return pageMapper.toDto(groupRepository.searchAll(
+                principal.getId(),
+                "%" + dto.getNameFilter() + "%",
+                PageRequest.of(page, size)
+        ).map(groupMapper::toDto));
     }
 
     @Transactional
