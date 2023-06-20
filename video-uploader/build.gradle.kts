@@ -18,9 +18,17 @@ repositories {
     mavenCentral()
 }
 
+dependencyManagement {
+    imports {
+        mavenBom("org.springframework.cloud:spring-cloud-dependencies:2022.0.1")
+    }
+}
+
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.cloud:spring-cloud-stream-binder-rabbit")
     implementation("com.vk.api:sdk:1.0.14")
     compileOnly("org.projectlombok:lombok")
     runtimeOnly("org.postgresql:postgresql")

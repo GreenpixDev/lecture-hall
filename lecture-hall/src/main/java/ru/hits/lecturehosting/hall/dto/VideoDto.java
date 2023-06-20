@@ -18,6 +18,8 @@ public class VideoDto implements Serializable {
 
     private final String description;
 
+    private final UUID subjectId;
+
     @Schema(description = "Дата создании видео (публикации его на сайт)")
     private final LocalDateTime creationDateTime;
 

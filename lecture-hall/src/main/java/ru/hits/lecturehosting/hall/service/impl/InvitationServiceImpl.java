@@ -49,6 +49,7 @@ public class InvitationServiceImpl implements InvitationService {
         ).map(invitationMapper::toDto));
     }
 
+    @Transactional
     @Override
     public CreatedInvitationDto createGroupInvitation(UserPrincipal principal, UUID groupId, CreationInvitationDto dto) {
         groupPermissionService.checkAdminPermission(principal, groupId);

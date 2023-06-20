@@ -10,7 +10,7 @@ import java.io.Serializable;
 
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
+//@AllArgsConstructor
 @Schema(description = "Пока пустая и бесполезная DTO. Мейби в будущем будет поиск по имени")
 public class SearchMemberDto implements Serializable {
 

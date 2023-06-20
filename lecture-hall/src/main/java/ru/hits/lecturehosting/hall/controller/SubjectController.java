@@ -39,7 +39,7 @@ public class SubjectController {
             @RequestParam(value = "count", defaultValue = "20") int count,
             @RequestBody SearchSubjectDto dto
     ) {
-        return subjectService.getGroupSubjects(user, groupId,  - 1, count, dto);
+        return subjectService.getGroupSubjects(user, groupId, page - 1, count, dto);
     }
 
     @Tag(name = "group")

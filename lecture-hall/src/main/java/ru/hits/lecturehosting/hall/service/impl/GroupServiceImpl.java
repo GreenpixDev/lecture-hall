@@ -67,8 +67,6 @@ public class GroupServiceImpl implements GroupService {
         ));
 
         groupRepository.save(group);
-
-        // TODO create VK group
     }
 
     @Transactional

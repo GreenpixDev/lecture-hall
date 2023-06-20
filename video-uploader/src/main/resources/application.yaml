@@ -1,4 +1,31 @@
-spring:
+server:
+  port: 8001
+  error:
+    # Не включаем stacktrace в http ответ ошибки
+    include-stacktrace: never
 
-vk:
-  access-token: "vk1.a._TpqPv2oYLljew_Ww64DSfvmJ1Jjsf0VKv3uoAjDMqslR0JJmcj_WHeTwziLG9vfIjnYthZovarqKW1kmi6RVPhkc7dhe6dCdM-3astKP3nsCMsTWySziRUu8M65p6b2qySR20w6_8OAFFZlMEtsTyrNedHJujWTtfbrI6LC8P5yYOQ1ImzviXGZu2jROkNwqoSDIEQ1asNMMFC0-v0tng"
+logging:
+  level:
+    # Уровень логирования
+    ru.greenpix.messenger: ${LOGGING_LEVEL:info}
+
+spring:
+  servlet:
+    multipart:
+      max-file-size: ${MAX_FILE_SIZE:1GB}
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:10001}/${DB_NAME:video}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  flyway:
+    baseline-on-migrate: true
+  rabbitmq:
+    username: ${RABBITMQ_USERNAME:guest}
+    password: ${RABBITMQ_PASSWORD:guest}
+    virtual-host: ${RABBITMQ_VHOST:/}
+    host: ${RABBITMQ_HOST:127.0.0.1}
+    port: ${RABBITMQ_PORT:5672}

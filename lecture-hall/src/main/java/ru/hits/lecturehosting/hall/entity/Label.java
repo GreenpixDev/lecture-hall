@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.hits.lecturehosting.hall.entity.id.TagValueId;
 
-@Table(name = "\"tag_value\"")
+@Table(name = "\"label\"")
 @Entity
 @IdClass(TagValueId.class)
 @Getter
@@ -22,7 +22,7 @@ import ru.hits.lecturehosting.hall.entity.id.TagValueId;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class TagValue {
+public class Label {
 
     @Id
     @ManyToOne

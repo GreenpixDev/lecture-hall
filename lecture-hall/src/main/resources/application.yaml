@@ -20,6 +20,17 @@ spring:
       ddl-auto: update
   flyway:
     baseline-on-migrate: true
+  rabbitmq:
+    username: ${RABBITMQ_USERNAME:guest}
+    password: ${RABBITMQ_PASSWORD:guest}
+    virtual-host: ${RABBITMQ_VHOST:/}
+    host: ${RABBITMQ_HOST:127.0.0.1}
+    port: ${RABBITMQ_PORT:5672}
+  cloud:
+    stream:
+      bindings:
+        updateVideoStatusConsumer-in-0:
+          destination: ${RABBITMQ_TOPIC:video-topic}
   security:
     oauth2:
       client:
@@ -27,8 +38,8 @@ spring:
           vk:
             provider: vk
             client-name: VK
-            client-id: 51679482
-            client-secret: 4IlKzeDOBPRy80wrMNgj
+            client-id: ${VK_CLIENT_ID:51683542}
+            client-secret: ${VK_CLIENT_SECRET:eBKqGCUoc0l44ASQrQSO}
             scope:
               - video
             authorization-grant-type: authorization_code
@@ -44,3 +55,18 @@ spring:
 springdoc:
   swagger-ui:
     path: /swagger
+
+integration:
+  hosting:
+    url: ${HOSTING_URL:http://localhost:8001}
+    access-token: "a"
+  frontend:
+    success-url: ${FRONTEND_URL:http://localhost:4200}
+    failed-url: ${FRONTEND_URL:http://localhost:4200}?error=unauthorized
+
+vk:
+  super-user:
+    user-id: ${VK_SUPER_USER_ID:0}
+    access-token: ${VK_SUPER_USER_ACCESS_TOKEN:vk1.a._TpqPv2oYLljew_Ww64DSfvmJ1Jjsf0VKv3uoAjDMqslR0JJmcj_WHeTwziLG9vfIjnYthZovarqKW1kmi6RVPhkc7dhe6dCdM-3astKP3nsCMsTWySziRUu8M65p6b2qySR20w6_8OAFFZlMEtsTyrNedHJujWTtfbrI6LC8P5yYOQ1ImzviXGZu2jROkNwqoSDIEQ1asNMMFC0-v0tng}
+  hosting:
+    group-id: ${VK_HOSTING_GROUP_ID:221066297}

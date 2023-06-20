@@ -1,5 +1,6 @@
 package ru.hits.lecturehosting.hall.config.security;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -16,12 +17,16 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.web.client.RestTemplate;
 import ru.hits.lecturehosting.hall.config.oauth2.FixedOAuth2UserService;
 import ru.hits.lecturehosting.hall.config.oauth2.FixedTokenResponseConverter;
+import ru.hits.lecturehosting.hall.properties.FrontendProperties;
 import ru.hits.lecturehosting.hall.service.UserService;
 
 import java.util.Arrays;
 
 @Configuration
+@RequiredArgsConstructor
 public class WebSecurityConfiguration {
+
+    private final FrontendProperties frontendProperties;
 
     @Bean
     public SecurityFilterChain securityWebFilterChain(
@@ -56,8 +61,8 @@ public class WebSecurityConfiguration {
                         .userInfoEndpoint(userInfoEndpoint -> userInfoEndpoint
                                 .userService(new FixedOAuth2UserService(userService))
                         )
-                        .defaultSuccessUrl("http://localhost:8000/swagger")
-                        .failureUrl("http://localhost:8000/failure")
+                        .defaultSuccessUrl(frontendProperties.getSuccessUrl())
+                        .failureUrl(frontendProperties.getFailedUrl())
                 )
                 .build();
     }

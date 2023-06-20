@@ -1,8 +1,10 @@
 package ru.hits.lecturehosting.hall.service;
 
+import com.vk.api.sdk.objects.responses.VideoUploadResponse;
 import ru.hits.lecturehosting.hall.dto.PageDto;
 import ru.hits.lecturehosting.hall.dto.UploadVideoDto;
 import ru.hits.lecturehosting.hall.dto.VideoDto;
+import ru.hits.lecturehosting.hall.dto.amqp.AmqpVideoUpdateDto;
 import ru.hits.lecturehosting.hall.dto.create.CreationVideoDto;
 import ru.hits.lecturehosting.hall.dto.search.SearchVideoDto;
 import ru.hits.lecturehosting.hall.dto.update.UpdateVideoDto;
@@ -21,5 +23,7 @@ public interface VideoService {
     void updateVideo(UserPrincipal principal, UUID videoId, UpdateVideoDto dto);
 
     void deleteVideo(UserPrincipal principal, UUID videoId);
+
+    void updateVideoStatus(VideoUploadResponse response);
 
 }

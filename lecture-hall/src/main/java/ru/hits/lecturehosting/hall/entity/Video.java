@@ -1,13 +1,6 @@
 package ru.hits.lecturehosting.hall.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Table(name = "\"video\"")
@@ -30,6 +25,9 @@ public class Video {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private UUID id;
+
+    @Column(name = "vk_id", nullable = false)
+    private Integer vkId;
 
     @ManyToOne
     @JoinColumn(name = "group_id", nullable = false)
@@ -54,5 +52,12 @@ public class Video {
 
     @Column(name = "player_url")
     private String playerUrl;
+
+    @ManyToMany
+    @JoinTable(name = "\"video_labels\"",
+            joinColumns = @JoinColumn(name = "video_id"),
+            inverseJoinColumns = {@JoinColumn(name = "tag_id"), @JoinColumn(name = "value")})
+    @Builder.Default
+    private Set<Label> labels = new LinkedHashSet<>();
 
 }

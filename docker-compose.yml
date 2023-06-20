@@ -1,0 +1,75 @@
+version: '3.8'
+
+services:
+  lecture-hall:
+    build:
+      context: ./lecture-hall
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      RABBITMQ_HOST: rabbitmq
+      DB_HOST: postgres-hall
+      DB_PORT: 5432
+      VK_CLIENT_ID: 51679482
+      VK_CLIENT_SECRET: 4IlKzeDOBPRy80wrMNgj
+    depends_on:
+      - postgres-hall
+      - rabbitmq
+    networks:
+      - db-hall-network
+      - amqp-network
+  video-uploader:
+    build:
+      context: ./video-uploader
+      dockerfile: Dockerfile
+    ports:
+      - "8001:8001"
+    environment:
+      RABBITMQ_HOST: rabbitmq
+      DB_HOST: postgres-video
+      DB_PORT: 5432
+    depends_on:
+      - postgres-video
+      - rabbitmq
+    networks:
+      - db-video-network
+      - amqp-network
+  postgres-hall:
+    image: postgres:latest
+    expose:
+      - '5432'
+    environment:
+      POSTGRES_DB: lecture-hall
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    networks:
+      - db-hall-network
+  postgres-video:
+    image: postgres:latest
+    expose:
+      - '5432'
+    environment:
+      POSTGRES_DB: video
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    networks:
+      - db-video-network
+  rabbitmq:
+    image: rabbitmq:management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    networks:
+      - amqp-network
+
+networks:
+  db-hall-network:
+    driver: bridge
+  db-video-network:
+    driver: bridge
+  amqp-network:
+    driver: bridge

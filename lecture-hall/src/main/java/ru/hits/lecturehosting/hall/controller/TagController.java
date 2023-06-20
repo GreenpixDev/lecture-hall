@@ -39,12 +39,4 @@ public class TagController {
         return tagService.getGroupTags(user, groupId, page - 1, count, dto);
     }
 
-    /*@GetMapping("groups/{groupId}/tags/{tagId}/values")
-    public PageDto<TagValueDto> getTagValues(
-            @PathVariable UUID groupId,
-            @PathVariable UUID tagId
-    ) {
-        throw new UnsupportedOperationException(); // TODO
-    }*/
-
 }
