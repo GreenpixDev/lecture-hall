@@ -52,7 +52,7 @@ public class VideoServiceImpl implements VideoService {
     public PageDto<VideoDto> getGroupVideos(UserPrincipal principal, UUID groupId, int page, int size, SearchVideoDto dto) {
         groupPermissionService.checkPermission(principal, groupId);
         return pageMapper.toDto(videoRepository.searchAll(
-                principal.getId(),
+                groupId,
                 // TODO query
                 "%" + dto.getTextFilter() + "%",
                 PageRequest.of(page, size)

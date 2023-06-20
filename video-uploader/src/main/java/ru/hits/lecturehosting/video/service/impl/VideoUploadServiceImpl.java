@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import ru.hits.lecturehosting.video.entity.VideoUpload;
 import ru.hits.lecturehosting.video.exception.VideoUploadNotFoundException;
+import ru.hits.lecturehosting.video.properties.AmqpTopicProperties;
 import ru.hits.lecturehosting.video.repository.VideoUploadRepository;
 import ru.hits.lecturehosting.video.service.VideoUploadService;
 import ru.hits.lecturehosting.video.util.TemporaryFile;
@@ -25,6 +26,7 @@ public class VideoUploadServiceImpl implements VideoUploadService {
     private final VkApiClient client;
     private final VideoUploadRepository videoUploadRepository;
 
+    private final AmqpTopicProperties amqpTopicProperties;
     private final StreamBridge streamBridge;
 
     @Override
@@ -55,8 +57,7 @@ public class VideoUploadServiceImpl implements VideoUploadService {
                     .execute();
             upload.setUploaded(true);
 
-            // TODO const
-            streamBridge.send("video-topic", response);
+            streamBridge.send(amqpTopicProperties.getVideo(), response);
         }
         catch (ApiException | ClientException | IOException e) {
             throw new RuntimeException(e);

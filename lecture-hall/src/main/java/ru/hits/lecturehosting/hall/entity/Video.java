@@ -56,7 +56,7 @@ public class Video {
     @ManyToMany
     @JoinTable(name = "\"video_labels\"",
             joinColumns = @JoinColumn(name = "video_id"),
-            inverseJoinColumns = {@JoinColumn(name = "tag_id"), @JoinColumn(name = "value")})
+            inverseJoinColumns = @JoinColumn(name = "label_id"))
     @Builder.Default
     private Set<Label> labels = new LinkedHashSet<>();
 

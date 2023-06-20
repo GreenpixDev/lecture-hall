@@ -44,7 +44,7 @@ public class InvitationServiceImpl implements InvitationService {
     public PageDto<InvitationDto> getGroupInvitations(UserPrincipal principal, UUID groupId, int page, int size) {
         groupPermissionService.checkAdminPermission(principal, groupId);
         return pageMapper.toDto(invitationRepository.searchAll(
-                principal.getId(),
+                groupId,
                 PageRequest.of(page, size)
         ).map(invitationMapper::toDto));
     }

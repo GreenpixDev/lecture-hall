@@ -29,3 +29,7 @@ spring:
     virtual-host: ${RABBITMQ_VHOST:/}
     host: ${RABBITMQ_HOST:127.0.0.1}
     port: ${RABBITMQ_PORT:5672}
+
+amqp:
+  topic:
+    video: ${RABBITMQ_TOPIC:video-topic}

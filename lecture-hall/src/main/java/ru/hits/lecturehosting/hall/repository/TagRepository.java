@@ -11,7 +11,8 @@ import java.util.UUID;
 
 public interface TagRepository extends JpaRepository<Tag, UUID> {
 
-    @Query("select t from Tag t where t.group.id = :groupId")
-    Page<Tag> searchAll(UUID groupId, Pageable pageable);
+    @Query("select t from Tag t where t.group.id = :groupId and " +
+            "(t.name like :textExpression)")
+    Page<Tag> searchAll(UUID groupId, String textExpression, Pageable pageable);
 
 }

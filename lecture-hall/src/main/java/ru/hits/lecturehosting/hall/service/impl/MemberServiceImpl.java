@@ -39,7 +39,7 @@ public class MemberServiceImpl implements MemberService {
     public PageDto<MemberDto> getGroupMembers(UserPrincipal principal, UUID groupId, int page, int size, SearchMemberDto dto) {
         groupPermissionService.checkPermission(principal, groupId);
         return pageMapper.toDto(memberRepository.searchAll(
-                principal.getId(),
+                groupId,
                 PageRequest.of(page, size)
         ).map(memberMapper::toDto));
     }

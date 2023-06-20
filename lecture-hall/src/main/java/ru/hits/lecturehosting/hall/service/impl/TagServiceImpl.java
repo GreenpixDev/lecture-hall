@@ -32,8 +32,8 @@ public class TagServiceImpl implements TagService {
     public PageDto<TagDto> getGroupTags(UserPrincipal principal, UUID groupId, int page, int size, SearchTagDto dto) {
         groupPermissionService.checkPermission(principal, groupId);
         return pageMapper.toDto(tagRepository.searchAll(
-                principal.getId(),
-                // TODO "%" + dto.getNameFilter() + "%",
+                groupId,
+                "%" + dto.getNameFilter() + "%",
                 PageRequest.of(page, size)
         ).map(tagMapper::toDto));
     }

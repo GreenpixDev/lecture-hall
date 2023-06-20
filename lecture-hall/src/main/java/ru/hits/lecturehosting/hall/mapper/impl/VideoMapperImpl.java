@@ -1,20 +1,39 @@
 package ru.hits.lecturehosting.hall.mapper.impl;
 
+import lombok.Data;
 import org.springframework.stereotype.Component;
+import ru.hits.lecturehosting.hall.dto.TagDto;
 import ru.hits.lecturehosting.hall.dto.VideoDto;
 import ru.hits.lecturehosting.hall.dto.create.CreationVideoDto;
 import ru.hits.lecturehosting.hall.dto.update.UpdateVideoDto;
 import ru.hits.lecturehosting.hall.entity.Video;
 import ru.hits.lecturehosting.hall.mapper.VideoMapper;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Component
 public class VideoMapperImpl implements VideoMapper {
 
     @Override
     public VideoDto toDto(Video video) {
+        Map<UUID, TagInfo> tagValuesMap = new HashMap<>();
+        video.getLabels().forEach(e -> {
+            TagInfo info;
+            if (tagValuesMap.containsKey(e.getKey().getId())) {
+                info = tagValuesMap.get(e.getKey().getId());
+            }
+            else {
+                info = new TagInfo(e.getKey().getName());
+                tagValuesMap.put(e.getKey().getId(), info);
+            }
+            info.getValues().add(e.getValue());
+        });
+
         return new VideoDto(
                 video.getId(),
                 video.getTitle(),
@@ -22,7 +41,9 @@ public class VideoMapperImpl implements VideoMapper {
                 video.getSubject().getId(),
                 video.getCreationDateTime(),
                 video.getRecordingDateTime(),
-                List.of(), // TODO
+                tagValuesMap.entrySet().stream()
+                        .map(e -> new TagDto(e.getKey(), e.getValue().getName(), e.getValue().getValues()))
+                        .collect(Collectors.toList()),
                 video.getPlayerUrl()
         );
     }
@@ -49,5 +70,13 @@ public class VideoMapperImpl implements VideoMapper {
             // TODO
         }
         return video;
+    }
+
+    @Data
+    public static class TagInfo {
+
+        private final String name;
+        private final List<String> values = new ArrayList<>();
+
     }
 }
