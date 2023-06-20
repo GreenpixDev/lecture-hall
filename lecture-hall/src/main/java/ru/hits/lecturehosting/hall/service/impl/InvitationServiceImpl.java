@@ -59,6 +59,7 @@ public class InvitationServiceImpl implements InvitationService {
 
         Invitation invitation = invitationMapper.toEntity(dto);
         invitation.setCode(UUID.randomUUID().toString().replace("-", ""));
+        invitation.setGroup(group);
         invitation = invitationRepository.save(invitation);
 
         return new CreatedInvitationDto(invitation.getCode());

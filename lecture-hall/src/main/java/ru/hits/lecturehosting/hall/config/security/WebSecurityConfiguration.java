@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.oauth2.client.endpoint.DefaultAuthorizationCodeTokenResponseClient;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AccessTokenResponseClient;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest;
@@ -40,6 +41,7 @@ public class WebSecurityConfiguration {
                 )
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers(
+                                "/ping",
                                 "/swagger",
                                 "/swagger-ui/**",
                                 "/webjars/**",
@@ -47,9 +49,7 @@ public class WebSecurityConfiguration {
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
-                /*.cors(cors -> cors
-                        .disable()
-                )*/
+                .cors(AbstractHttpConfigurer::disable)
                 .csrf(csrf -> csrf
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                         .disable() // TODO убрать

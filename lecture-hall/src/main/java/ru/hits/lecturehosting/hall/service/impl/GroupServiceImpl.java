@@ -5,7 +5,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.hits.lecturehosting.hall.dto.GroupDto;
-import ru.hits.lecturehosting.hall.dto.JoiningGroupDto;
+import ru.hits.lecturehosting.hall.dto.special.JoiningGroupDto;
 import ru.hits.lecturehosting.hall.dto.PageDto;
 import ru.hits.lecturehosting.hall.dto.create.CreationGroupDto;
 import ru.hits.lecturehosting.hall.dto.search.SearchGroupDto;
@@ -15,6 +15,7 @@ import ru.hits.lecturehosting.hall.entity.Invitation;
 import ru.hits.lecturehosting.hall.entity.Member;
 import ru.hits.lecturehosting.hall.entity.User;
 import ru.hits.lecturehosting.hall.entity.id.MemberId;
+import ru.hits.lecturehosting.hall.exception.AlreadyMemberException;
 import ru.hits.lecturehosting.hall.exception.GroupForbiddenException;
 import ru.hits.lecturehosting.hall.exception.GroupNotFoundException;
 import ru.hits.lecturehosting.hall.exception.InvitationNotFoundException;
@@ -29,6 +30,7 @@ import ru.hits.lecturehosting.hall.service.GroupPermissionService;
 import ru.hits.lecturehosting.hall.service.GroupService;
 import ru.hits.lecturehosting.hall.util.UserPrincipal;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
 
@@ -99,7 +101,15 @@ public class GroupServiceImpl implements GroupService {
                 .orElseThrow(UnauthorizedException::new);
 
         Invitation invitation = invitationRepository.findByCode(dto.getInvitationCode())
+                .filter(e -> e.getUsages() == null || e.getUsages() < e.getUsageLimit())
+                .filter(e -> e.getExpirationDateTime() == null || e.getExpirationDateTime().isAfter(LocalDateTime.now()))
                 .orElseThrow(InvitationNotFoundException::new);
+
+        if (memberRepository.existsById(new MemberId(user.getId(), invitation.getGroup().getId()))) {
+            throw new AlreadyMemberException();
+        }
+
+        invitation.setUsages(invitation.getUsages() + 1);
 
         memberRepository.save(Member.builder()
                 .group(invitation.getGroup())
