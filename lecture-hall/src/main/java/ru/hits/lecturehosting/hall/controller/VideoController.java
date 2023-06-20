@@ -41,7 +41,7 @@ public class VideoController {
             @RequestParam(value = "count", defaultValue = "20") int count,
             @RequestBody SearchVideoDto dto
     ) {
-        return videoService.getGroupVideos(user, groupId, page, count, dto);
+        return videoService.getGroupVideos(user, groupId, page - 1, count, dto);
     }
 
     @Operation(summary = "Получение информации о видео")

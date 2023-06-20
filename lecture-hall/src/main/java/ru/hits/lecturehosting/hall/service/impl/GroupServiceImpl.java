@@ -11,15 +11,18 @@ import ru.hits.lecturehosting.hall.dto.create.CreationGroupDto;
 import ru.hits.lecturehosting.hall.dto.search.SearchGroupDto;
 import ru.hits.lecturehosting.hall.dto.update.UpdateGroupDto;
 import ru.hits.lecturehosting.hall.entity.Group;
+import ru.hits.lecturehosting.hall.entity.Invitation;
 import ru.hits.lecturehosting.hall.entity.Member;
 import ru.hits.lecturehosting.hall.entity.User;
 import ru.hits.lecturehosting.hall.entity.id.MemberId;
 import ru.hits.lecturehosting.hall.exception.GroupForbiddenException;
 import ru.hits.lecturehosting.hall.exception.GroupNotFoundException;
+import ru.hits.lecturehosting.hall.exception.InvitationNotFoundException;
 import ru.hits.lecturehosting.hall.exception.UnauthorizedException;
 import ru.hits.lecturehosting.hall.mapper.GroupMapper;
 import ru.hits.lecturehosting.hall.mapper.PageMapper;
 import ru.hits.lecturehosting.hall.repository.GroupRepository;
+import ru.hits.lecturehosting.hall.repository.InvitationRepository;
 import ru.hits.lecturehosting.hall.repository.MemberRepository;
 import ru.hits.lecturehosting.hall.repository.UserRepository;
 import ru.hits.lecturehosting.hall.service.GroupPermissionService;
@@ -36,6 +39,7 @@ public class GroupServiceImpl implements GroupService {
     private final GroupRepository groupRepository;
     private final MemberRepository memberRepository;
     private final UserRepository userRepository;
+    private final InvitationRepository invitationRepository;
 
     private final PageMapper pageMapper;
     private final GroupMapper groupMapper;
@@ -46,7 +50,7 @@ public class GroupServiceImpl implements GroupService {
     public PageDto<GroupDto> getGroups(UserPrincipal principal, int page, int size, SearchGroupDto dto) {
         return pageMapper.toDto(groupRepository.searchAll(
                 principal.getId(),
-                "%" + dto.getNameFilter() + "%",
+                "%" + (dto.getNameFilter() == null ? "" : dto.getNameFilter()) + "%",
                 PageRequest.of(page, size)
         ).map(groupMapper::toDto));
     }
@@ -88,11 +92,23 @@ public class GroupServiceImpl implements GroupService {
         groupRepository.deleteById(groupId);
     }
 
+    @Transactional
     @Override
     public void joinToGroup(UserPrincipal principal, JoiningGroupDto dto) {
+        User user = userRepository.findById(principal.getId())
+                .orElseThrow(UnauthorizedException::new);
 
+        Invitation invitation = invitationRepository.findByCode(dto.getInvitationCode())
+                .orElseThrow(InvitationNotFoundException::new);
+
+        memberRepository.save(Member.builder()
+                .group(invitation.getGroup())
+                .user(user)
+                .build()
+        );
     }
 
+    @Transactional
     @Override
     public void quitFromGroup(UserPrincipal principal, UUID groupId) {
         Group group = groupRepository.findById(groupId)

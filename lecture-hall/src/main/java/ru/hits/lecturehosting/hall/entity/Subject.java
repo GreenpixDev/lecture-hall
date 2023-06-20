@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Table(name = "\"subject\"")
@@ -34,5 +36,9 @@ public class Subject {
     @Column(name = "creation", nullable = false)
     @Builder.Default
     private LocalDateTime creationDateTime = LocalDateTime.now();
+
+    @OneToMany(mappedBy = "subject", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private Set<Video> videos = new LinkedHashSet<>();
 
 }

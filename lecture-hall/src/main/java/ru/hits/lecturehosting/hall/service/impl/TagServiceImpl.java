@@ -33,7 +33,7 @@ public class TagServiceImpl implements TagService {
         groupPermissionService.checkPermission(principal, groupId);
         return pageMapper.toDto(tagRepository.searchAll(
                 groupId,
-                "%" + dto.getNameFilter() + "%",
+                "%" + (dto.getNameFilter() == null ? "" : dto.getNameFilter()) + "%",
                 PageRequest.of(page, size)
         ).map(tagMapper::toDto));
     }

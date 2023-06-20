@@ -16,4 +16,6 @@ public interface InvitationRepository extends JpaRepository<Invitation, UUID> {
     @Query("select i from Invitation i where i.group.id = :groupId")
     Page<Invitation> searchAll(UUID groupId, Pageable pageable);
 
+    Optional<Invitation> findByCode(String code);
+
 }

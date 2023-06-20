@@ -1,12 +1,14 @@
 package ru.hits.lecturehosting.hall.mapper.impl;
 
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.hits.lecturehosting.hall.dto.TagDto;
 import ru.hits.lecturehosting.hall.dto.VideoDto;
 import ru.hits.lecturehosting.hall.dto.create.CreationVideoDto;
 import ru.hits.lecturehosting.hall.dto.update.UpdateVideoDto;
 import ru.hits.lecturehosting.hall.entity.Video;
+import ru.hits.lecturehosting.hall.mapper.SubjectMapper;
 import ru.hits.lecturehosting.hall.mapper.VideoMapper;
 
 import java.util.ArrayList;
@@ -17,7 +19,10 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Component
+@RequiredArgsConstructor
 public class VideoMapperImpl implements VideoMapper {
+
+    private final SubjectMapper subjectMapper;
 
     @Override
     public VideoDto toDto(Video video) {
@@ -38,7 +43,7 @@ public class VideoMapperImpl implements VideoMapper {
                 video.getId(),
                 video.getTitle(),
                 video.getDescription(),
-                video.getSubject().getId(),
+                subjectMapper.toDto(video.getSubject()),
                 video.getCreationDateTime(),
                 video.getRecordingDateTime(),
                 tagValuesMap.entrySet().stream()

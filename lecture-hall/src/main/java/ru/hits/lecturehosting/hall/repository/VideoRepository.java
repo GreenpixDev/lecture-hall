@@ -13,7 +13,7 @@ import java.util.UUID;
 public interface VideoRepository extends JpaRepository<Video, UUID> {
 
     // TODO label
-    @Query("select v from Video v join v.labels l where v.group.id = :groupId and (" +
+    @Query("select v from Video v where v.group.id = :groupId and (" +
             "v.title like :textExpression or v.description like :textExpression)")
     Page<Video> searchAll(UUID groupId, String textExpression, Pageable pageable);
 

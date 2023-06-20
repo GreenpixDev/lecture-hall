@@ -48,6 +48,22 @@ public class Group {
 
     @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
+    private Set<Invitation> invitations = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private Set<Subject> subjects = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private Set<Member> members = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private Set<Tag> tags = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private Set<Video> videos = new LinkedHashSet<>();
 
 }

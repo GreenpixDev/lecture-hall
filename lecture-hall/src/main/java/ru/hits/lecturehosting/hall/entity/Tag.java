@@ -1,5 +1,6 @@
 package ru.hits.lecturehosting.hall.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -40,7 +41,7 @@ public class Tag {
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 
-    @OneToMany(mappedBy = "key", orphanRemoval = true)
+    @OneToMany(mappedBy = "key", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private Set<Label> labels = new LinkedHashSet<>();
 

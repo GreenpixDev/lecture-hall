@@ -43,7 +43,7 @@ public class SubjectServiceImpl implements SubjectService {
         groupPermissionService.checkPermission(principal, groupId);
         return pageMapper.toDto(subjectRepository.searchAll(
                 groupId,
-                "%" + dto.getNameFilter() + "%",
+                "%" + (dto.getNameFilter() == null ? "" : dto.getNameFilter()) + "%",
                 PageRequest.of(page, size)
         ).map(subjectMapper::toDto));
     }

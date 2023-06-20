@@ -54,7 +54,7 @@ public class VideoServiceImpl implements VideoService {
         return pageMapper.toDto(videoRepository.searchAll(
                 groupId,
                 // TODO query
-                "%" + dto.getTextFilter() + "%",
+                "%" + (dto.getTextFilter() == null ? "" : dto.getTextFilter()) + "%",
                 PageRequest.of(page, size)
         ).map(videoMapper::toDto));
     }
