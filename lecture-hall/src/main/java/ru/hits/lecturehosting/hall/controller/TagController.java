@@ -1,6 +1,7 @@
 package ru.hits.lecturehosting.hall.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import ru.hits.lecturehosting.hall.SecurityConst;
 import ru.hits.lecturehosting.hall.dto.PageDto;
 import ru.hits.lecturehosting.hall.dto.TagDto;
 import ru.hits.lecturehosting.hall.dto.search.SearchTagDto;
@@ -28,6 +30,7 @@ public class TagController {
 
     @Tag(name = "group")
     @Operation(summary = "Поиск тегов в группе")
+    @SecurityRequirement(name = SecurityConst.BEARER)
     @PostMapping("groups/{groupId}/tags/search")
     public PageDto<TagDto> getTags(
             @AuthenticationPrincipal UserPrincipal user,

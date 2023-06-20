@@ -1,6 +1,7 @@
 package ru.hits.lecturehosting.hall.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import ru.hits.lecturehosting.hall.SecurityConst;
 import ru.hits.lecturehosting.hall.dto.CreatedInvitationDto;
 import ru.hits.lecturehosting.hall.dto.InvitationDto;
 import ru.hits.lecturehosting.hall.dto.PageDto;
@@ -33,6 +35,7 @@ public class InvitationController {
 
     @Tag(name = "group")
     @Operation(summary = "Список приглашений в группе")
+    @SecurityRequirement(name = SecurityConst.BEARER)
     @GetMapping("groups/{groupId}/invitations")
     public PageDto<InvitationDto> getGroupInvitations(
             @AuthenticationPrincipal UserPrincipal user,
@@ -45,6 +48,7 @@ public class InvitationController {
 
     @Tag(name = "group")
     @Operation(summary = "Создание приглашения в группе")
+    @SecurityRequirement(name = SecurityConst.BEARER)
     @PostMapping("groups/{groupId}/invitations/new")
     public CreatedInvitationDto createInvitation(
             @AuthenticationPrincipal UserPrincipal user,
@@ -55,6 +59,7 @@ public class InvitationController {
     }
 
     @Operation(summary = "Обновление приглашения")
+    @SecurityRequirement(name = SecurityConst.BEARER)
     @PutMapping("invitations/{invitationId}")
     public void updateInvitation(
             @AuthenticationPrincipal UserPrincipal user,
@@ -65,6 +70,7 @@ public class InvitationController {
     }
 
     @Operation(summary = "Удаление приглашения")
+    @SecurityRequirement(name = SecurityConst.BEARER)
     @DeleteMapping("invitations/{invitationId}")
     public void deleteInvitation(
             @AuthenticationPrincipal UserPrincipal user,

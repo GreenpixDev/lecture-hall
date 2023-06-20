@@ -52,6 +52,11 @@ spring:
             user-info-uri: https://api.vk.com/method/users.get?v=5.131
             user-name-attribute: first_name
 
+security:
+  jwt:
+    secret: ${JWT_SECRET:VGhpcyBpcyB0ZXN0IHNlY3JldCBrZXkgZm9yIEpXVCB0b2tlbg==}
+    expiration-minutes: ${JWT_EXPIRATION:1440}
+
 springdoc:
   swagger-ui:
     path: /swagger

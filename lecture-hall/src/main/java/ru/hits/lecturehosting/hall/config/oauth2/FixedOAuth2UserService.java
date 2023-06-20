@@ -24,6 +24,7 @@ import org.springframework.web.client.RestOperations;
 import org.springframework.web.client.RestTemplate;
 import ru.hits.lecturehosting.hall.entity.User;
 import ru.hits.lecturehosting.hall.service.UserService;
+import ru.hits.lecturehosting.hall.util.OAuth2VkUser;
 import ru.hits.lecturehosting.hall.util.UserPrincipal;
 
 import java.util.ArrayList;
@@ -53,7 +54,7 @@ public class FixedOAuth2UserService extends DefaultOAuth2UserService {
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2User oAuth2User = parseOAuth2User(userRequest);
         User user = userService.saveUserIfNotExists(oAuth2User);
-        return UserPrincipal.create(user, oAuth2User);
+        return OAuth2VkUser.create(user, oAuth2User);
     }
 
     private OAuth2User parseOAuth2User(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {

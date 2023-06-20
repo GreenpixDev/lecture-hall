@@ -1,6 +1,7 @@
 package ru.hits.lecturehosting.hall.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import ru.hits.lecturehosting.hall.SecurityConst;
 import ru.hits.lecturehosting.hall.dto.PageDto;
 import ru.hits.lecturehosting.hall.dto.SubjectDto;
 import ru.hits.lecturehosting.hall.dto.create.CreationSubjectDto;
@@ -31,6 +33,7 @@ public class SubjectController {
 
     @Tag(name = "group")
     @Operation(summary = "Поиск предметов в группе")
+    @SecurityRequirement(name = SecurityConst.BEARER)
     @PostMapping("groups/{groupId}/subjects/search")
     public PageDto<SubjectDto> getSubjects(
             @AuthenticationPrincipal UserPrincipal user,
@@ -44,6 +47,7 @@ public class SubjectController {
 
     @Tag(name = "group")
     @Operation(summary = "Создание предмета в группе")
+    @SecurityRequirement(name = SecurityConst.BEARER)
     @PostMapping("groups/{groupId}/subjects/new")
     public void createSubject(
             @AuthenticationPrincipal UserPrincipal user,
@@ -54,6 +58,7 @@ public class SubjectController {
     }
 
     @Operation(summary = "Обновление предмета")
+    @SecurityRequirement(name = SecurityConst.BEARER)
     @PutMapping("subjects/{subjectId}")
     public void updateSubject(
             @AuthenticationPrincipal UserPrincipal user,
@@ -64,6 +69,7 @@ public class SubjectController {
     }
 
     @Operation(summary = "Удаление предмета")
+    @SecurityRequirement(name = SecurityConst.BEARER)
     @DeleteMapping("subjects/{subjectId}")
     public void deleteSubject(
             @AuthenticationPrincipal UserPrincipal user,

@@ -1,6 +1,7 @@
 package ru.hits.lecturehosting.hall.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import ru.hits.lecturehosting.hall.SecurityConst;
 import ru.hits.lecturehosting.hall.dto.GroupDto;
 import ru.hits.lecturehosting.hall.dto.special.JoiningGroupDto;
 import ru.hits.lecturehosting.hall.dto.PageDto;
@@ -32,6 +34,7 @@ public class GroupController {
     private final GroupService groupService;
 
     @Operation(summary = "Поиск групп")
+    @SecurityRequirement(name = SecurityConst.BEARER)
     @PostMapping("search")
     public PageDto<GroupDto> getGroups(
             @AuthenticationPrincipal UserPrincipal user,
@@ -43,6 +46,7 @@ public class GroupController {
     }
 
     @Operation(summary = "Создание группы")
+    @SecurityRequirement(name = SecurityConst.BEARER)
     @PostMapping("new")
     public void createGroup(
             @AuthenticationPrincipal UserPrincipal user,
@@ -52,6 +56,7 @@ public class GroupController {
     }
 
     @Operation(summary = "Обновление группы")
+    @SecurityRequirement(name = SecurityConst.BEARER)
     @PutMapping("{groupId}")
     public void updateGroup(
             @AuthenticationPrincipal UserPrincipal user,
@@ -62,6 +67,7 @@ public class GroupController {
     }
 
     @Operation(summary = "Удаление группы")
+    @SecurityRequirement(name = SecurityConst.BEARER)
     @DeleteMapping("{groupId}")
     public void deleteGroup(
             @AuthenticationPrincipal UserPrincipal user,
@@ -73,6 +79,7 @@ public class GroupController {
     @Tag(name = "invitation")
     @Tag(name = "user")
     @Operation(summary = "Присоединение к группе по коду приглашения")
+    @SecurityRequirement(name = SecurityConst.BEARER)
     @PostMapping("entrance")
     public void joinToGroup(
             @AuthenticationPrincipal UserPrincipal user,
@@ -83,6 +90,7 @@ public class GroupController {
 
     @Tag(name = "user")
     @Operation(summary = "Выйти из группы")
+    @SecurityRequirement(name = SecurityConst.BEARER)
     @PostMapping("{groupId}/exit")
     public void quitFromGroup(
             @AuthenticationPrincipal UserPrincipal user,

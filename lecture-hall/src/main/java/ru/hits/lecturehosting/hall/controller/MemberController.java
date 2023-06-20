@@ -1,6 +1,7 @@
 package ru.hits.lecturehosting.hall.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import ru.hits.lecturehosting.hall.SecurityConst;
 import ru.hits.lecturehosting.hall.dto.MemberDto;
 import ru.hits.lecturehosting.hall.dto.PageDto;
 import ru.hits.lecturehosting.hall.dto.search.SearchMemberDto;
@@ -33,6 +35,7 @@ public class MemberController {
     private final MemberService memberService;
 
     @Operation(summary = "Список участников в группе")
+    @SecurityRequirement(name = SecurityConst.BEARER)
     @PostMapping("search")
     public PageDto<MemberDto> getGroupMembers(
             @AuthenticationPrincipal UserPrincipal user,
@@ -45,6 +48,7 @@ public class MemberController {
     }
 
     @Operation(summary = "Обновить участника в группе")
+    @SecurityRequirement(name = SecurityConst.BEARER)
     @PutMapping("{userId}")
     public void updateGroupMembers(
             @AuthenticationPrincipal UserPrincipal user,
@@ -56,6 +60,7 @@ public class MemberController {
     }
 
     @Operation(summary = "Кикнуть участника из группы")
+    @SecurityRequirement(name = SecurityConst.BEARER)
     @DeleteMapping("{userId}")
     public void kickGroupMembers(
             @AuthenticationPrincipal UserPrincipal user,

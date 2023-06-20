@@ -1,6 +1,7 @@
 package ru.hits.lecturehosting.hall.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import ru.hits.lecturehosting.hall.SecurityConst;
 import ru.hits.lecturehosting.hall.dto.PageDto;
 import ru.hits.lecturehosting.hall.dto.UploadVideoDto;
 import ru.hits.lecturehosting.hall.dto.VideoDto;
@@ -33,6 +35,7 @@ public class VideoController {
 
     @Tag(name = "group")
     @Operation(summary = "Поиск видео в группе")
+    @SecurityRequirement(name = SecurityConst.BEARER)
     @PostMapping("groups/{groupId}/videos/search")
     public PageDto<VideoDto> getGroupVideos(
             @AuthenticationPrincipal UserPrincipal user,
@@ -45,6 +48,7 @@ public class VideoController {
     }
 
     @Operation(summary = "Получение информации о видео")
+    @SecurityRequirement(name = SecurityConst.BEARER)
     @GetMapping("videos/{videoId}")
     public VideoDto getVideo(
             @AuthenticationPrincipal UserPrincipal user,
@@ -55,6 +59,7 @@ public class VideoController {
 
     @Tag(name = "group")
     @Operation(summary = "Создание видео в группе")
+    @SecurityRequirement(name = SecurityConst.BEARER)
     @PostMapping("groups/{groupId}/videos/new")
     public UploadVideoDto createGroupVideo(
             @AuthenticationPrincipal UserPrincipal user,
@@ -65,6 +70,7 @@ public class VideoController {
     }
 
     @Operation(summary = "Обновление видео")
+    @SecurityRequirement(name = SecurityConst.BEARER)
     @PutMapping("videos/{videoId}")
     public void updateVideo(
             @AuthenticationPrincipal UserPrincipal user,
@@ -75,6 +81,7 @@ public class VideoController {
     }
 
     @Operation(summary = "Удаление видео")
+    @SecurityRequirement(name = SecurityConst.BEARER)
     @DeleteMapping("videos/{videoId}")
     public void deleteVideo(
             @AuthenticationPrincipal UserPrincipal user,

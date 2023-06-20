@@ -14,10 +14,17 @@ import org.springframework.security.oauth2.client.http.OAuth2ErrorResponseErrorH
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.core.http.converter.OAuth2AccessTokenResponseHttpMessageConverter;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
 import org.springframework.web.client.RestTemplate;
+import ru.hits.lecturehosting.hall.config.jwt.JwtAuthenticationConverter;
+import ru.hits.lecturehosting.hall.config.jwt.JwtAuthenticationFilter;
+import ru.hits.lecturehosting.hall.config.jwt.JwtManager;
 import ru.hits.lecturehosting.hall.config.oauth2.FixedOAuth2UserService;
 import ru.hits.lecturehosting.hall.config.oauth2.FixedTokenResponseConverter;
+import ru.hits.lecturehosting.hall.config.oauth2.JwtUrlSuccessHandler;
 import ru.hits.lecturehosting.hall.properties.FrontendProperties;
 import ru.hits.lecturehosting.hall.service.UserService;
 
@@ -33,9 +40,12 @@ public class WebSecurityConfiguration {
     public SecurityFilterChain securityWebFilterChain(
             HttpSecurity http,
             ClientRegistrationRepository clientRegistrationRepository,
-            UserService userService
+            JwtAuthenticationConverter jwtConverter,
+            UserService userService,
+            JwtManager jwtManager
     ) throws Exception {
         return http
+                .sessionManagement(AbstractHttpConfigurer::disable)
                 .exceptionHandling(exceptionHandling -> exceptionHandling
                         .authenticationEntryPoint(new HttpStatusSuccessEntryPoint(HttpStatus.UNAUTHORIZED))
                 )
@@ -61,9 +71,10 @@ public class WebSecurityConfiguration {
                         .userInfoEndpoint(userInfoEndpoint -> userInfoEndpoint
                                 .userService(new FixedOAuth2UserService(userService))
                         )
-                        .defaultSuccessUrl(frontendProperties.getSuccessUrl())
+                        .successHandler(new JwtUrlSuccessHandler(frontendProperties.getSuccessUrl(), jwtManager))
                         .failureUrl(frontendProperties.getFailedUrl())
                 )
+                .addFilterAfter(new JwtAuthenticationFilter(jwtConverter), UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
