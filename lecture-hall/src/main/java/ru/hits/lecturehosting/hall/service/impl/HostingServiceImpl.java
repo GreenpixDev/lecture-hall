@@ -22,16 +22,17 @@ public class HostingServiceImpl implements HostingService {
 
     @Override
     public String generateVideoUploadUrl(String vkUploadUrl) {
-        String url = properties.getUrl() + "/video/upload";
+        String innerUrl = properties.getInnerUrl() + "/video/upload";
+        String outerUrl = properties.getOuterUrl() + "/video/upload";
 
         HttpEntity<String> entity = new HttpEntity<>(vkUploadUrl, new HttpHeaders());
 
         UUID id = restTemplate.postForEntity(
-                url + "?access_token=" + properties.getAccessToken(),
+                innerUrl + "?access_token=" + properties.getAccessToken(),
                 entity,
                 UUID.class
         ).getBody();
 
-        return url + "/" + id;
+        return outerUrl + "/" + id;
     }
 }
