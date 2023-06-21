@@ -12,7 +12,9 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.UUID;
 
-@Table(schema = "public", name = "subject")
+@Table(schema = "public", name = "subject", uniqueConstraints = @UniqueConstraint(
+        columnNames = {"group_id", "name"}
+))
 @Entity
 @Getter
 @Setter
@@ -30,7 +32,7 @@ public class Subject {
     @JoinColumn(name = "group_id", nullable = false)
     private Group group;
 
-    @Column(name = "name", nullable = false, unique = true)
+    @Column(name = "name", nullable = false)
     private String name;
 
     @Column(name = "creation", nullable = false)

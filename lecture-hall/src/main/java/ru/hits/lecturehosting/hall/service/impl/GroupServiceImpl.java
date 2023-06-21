@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import ru.hits.lecturehosting.hall.dto.GroupDto;
 import ru.hits.lecturehosting.hall.dto.special.JoiningGroupDto;
@@ -15,14 +16,17 @@ import ru.hits.lecturehosting.hall.entity.Group;
 import ru.hits.lecturehosting.hall.entity.Invitation;
 import ru.hits.lecturehosting.hall.entity.Member;
 import ru.hits.lecturehosting.hall.entity.User;
+import ru.hits.lecturehosting.hall.entity.id.BanId;
 import ru.hits.lecturehosting.hall.entity.id.MemberId;
 import ru.hits.lecturehosting.hall.exception.AlreadyMemberException;
+import ru.hits.lecturehosting.hall.exception.BannedException;
 import ru.hits.lecturehosting.hall.exception.GroupForbiddenException;
 import ru.hits.lecturehosting.hall.exception.GroupNotFoundException;
 import ru.hits.lecturehosting.hall.exception.InvitationNotFoundException;
 import ru.hits.lecturehosting.hall.exception.UnauthorizedException;
 import ru.hits.lecturehosting.hall.mapper.GroupMapper;
 import ru.hits.lecturehosting.hall.mapper.PageMapper;
+import ru.hits.lecturehosting.hall.repository.BanRepository;
 import ru.hits.lecturehosting.hall.repository.GroupRepository;
 import ru.hits.lecturehosting.hall.repository.InvitationRepository;
 import ru.hits.lecturehosting.hall.repository.MemberRepository;
@@ -42,6 +46,7 @@ public class GroupServiceImpl implements GroupService {
     private final GroupRepository groupRepository;
     private final MemberRepository memberRepository;
     private final UserRepository userRepository;
+    private final BanRepository banRepository;
     private final InvitationRepository invitationRepository;
 
     private final PageMapper pageMapper;
@@ -115,7 +120,7 @@ public class GroupServiceImpl implements GroupService {
         groupRepository.deleteById(groupId);
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     @Override
     public void joinToGroup(UserPrincipal principal, JoiningGroupDto dto) {
         User user = userRepository.findById(principal.getId())
@@ -125,6 +130,10 @@ public class GroupServiceImpl implements GroupService {
                 .filter(e -> e.getUsages() == null || e.getUsages() < e.getUsageLimit())
                 .filter(e -> e.getExpirationDateTime() == null || e.getExpirationDateTime().isAfter(LocalDateTime.now()))
                 .orElseThrow(InvitationNotFoundException::new);
+
+        if (banRepository.existsById(new BanId(user.getId(), invitation.getGroup().getId()))) {
+            throw new BannedException();
+        }
 
         if (memberRepository.existsById(new MemberId(user.getId(), invitation.getGroup().getId()))) {
             throw new AlreadyMemberException();

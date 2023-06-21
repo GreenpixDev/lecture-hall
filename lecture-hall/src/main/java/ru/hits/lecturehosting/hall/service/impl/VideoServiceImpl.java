@@ -58,6 +58,7 @@ public class VideoServiceImpl implements VideoService {
     private final VkApiService vkApiService;
     private final HostingService hostingService;
 
+    @Transactional
     @Override
     public PageDto<VideoDto> getGroupVideos(UserPrincipal principal, UUID groupId, int pageNum, int size, SearchVideoDto dto) {
         groupPermissionService.checkPermission(principal, groupId);
@@ -94,6 +95,7 @@ public class VideoServiceImpl implements VideoService {
         return pageMapper.toDto(page.map(videoMapper::toDto));
     }
 
+    @Transactional
     @Override
     public VideoDto getVideo(UserPrincipal principal, UUID videoId) {
         Video video = videoRepository.findById(videoId)

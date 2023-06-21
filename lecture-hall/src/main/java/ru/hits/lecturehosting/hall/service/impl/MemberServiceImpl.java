@@ -3,6 +3,7 @@ package ru.hits.lecturehosting.hall.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import ru.hits.lecturehosting.hall.dto.BanDto;
 import ru.hits.lecturehosting.hall.dto.MemberDto;
@@ -63,16 +64,7 @@ public class MemberServiceImpl implements MemberService {
     public void updateGroupMember(UserPrincipal principal, UUID groupId, UUID userId, UpdateMemberDto dto) {
         groupPermissionService.checkAdminPermission(principal, groupId);
 
-        Member member = memberRepository.findById(new MemberId(userId, groupId))
-                .orElseThrow(MemberNotFoundException::new);
-
-        if (member.getUser().getId().equals(member.getGroup().getOwner().getId())) {
-            throw new OwnerForbiddenException();
-        }
-
-        if (member.isAdministrator() && !member.getGroup().getOwner().getId().equals(principal.getId())) {
-            throw new OperationForbiddenException();
-        }
+        Member member = getMemberToAdminOperation(principal, groupId, userId);
 
         memberRepository.save(memberMapper.partialUpdate(dto, member));
     }
@@ -82,16 +74,7 @@ public class MemberServiceImpl implements MemberService {
     public void kickGroupMember(UserPrincipal principal, UUID groupId, UUID userId) {
         groupPermissionService.checkAdminPermission(principal, groupId);
 
-        Member member = memberRepository.findById(new MemberId(userId, groupId))
-                .orElseThrow(MemberNotFoundException::new);
-
-        if (member.getUser().getId().equals(member.getGroup().getOwner().getId())) {
-            throw new OwnerForbiddenException();
-        }
-
-        if (member.isAdministrator() && !member.getGroup().getOwner().getId().equals(principal.getId())) {
-            throw new OperationForbiddenException();
-        }
+        Member member = getMemberToAdminOperation(principal, groupId, userId);
 
         memberRepository.delete(member);
     }
@@ -106,21 +89,17 @@ public class MemberServiceImpl implements MemberService {
         ).map(banMapper::toDto));
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     @Override
     public void banGroupMember(UserPrincipal principal, UUID groupId, UUID userId) {
         groupPermissionService.checkAdminPermission(principal, groupId);
 
-        kickGroupMember(principal, groupId, userId);
+        Member member = getMemberToAdminOperation(principal, groupId, userId);
 
-        User user = userRepository.findById(principal.getId())
-                .orElseThrow(UnauthorizedException::new);
-        Group group = groupRepository.findById(groupId)
-                .orElseThrow(GroupNotFoundException::new);
-
+        memberRepository.delete(member);
         banRepository.save(Ban.builder()
-                .user(user)
-                .group(group)
+                .user(member.getUser())
+                .group(member.getGroup())
                 .build()
         );
     }
@@ -131,5 +110,20 @@ public class MemberServiceImpl implements MemberService {
         groupPermissionService.checkAdminPermission(principal, groupId);
 
         banRepository.deleteById(new BanId(userId, groupId));
+    }
+
+    private Member getMemberToAdminOperation(UserPrincipal principal, UUID groupId, UUID userId) {
+        Member member = memberRepository.findById(new MemberId(userId, groupId))
+                .orElseThrow(MemberNotFoundException::new);
+
+        if (member.getUser().getId().equals(member.getGroup().getOwner().getId())) {
+            throw new OwnerForbiddenException();
+        }
+
+        if (member.isAdministrator() && !member.getGroup().getOwner().getId().equals(principal.getId())) {
+            throw new OperationForbiddenException();
+        }
+
+        return member;
     }
 }
