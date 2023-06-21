@@ -14,7 +14,8 @@ services:
       VK_CLIENT_ID: 51679482
       VK_CLIENT_SECRET: 4IlKzeDOBPRy80wrMNgj
       FRONTEND_URL: http://localhost:4200
-      HOSTING_URL: http://video-uploader:8001
+      INNER_HOSTING_URL: http://video-uploader:8001
+      OUTER_HOSTING_URL: http://94.250.248.129:8001
     depends_on:
       - postgres-hall
       - rabbitmq
