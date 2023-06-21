@@ -13,6 +13,7 @@ spring:
   servlet:
     multipart:
       max-file-size: ${MAX_FILE_SIZE:1GB}
+      max-request-size: ${MAX_FILE_SIZE:1GB}
   datasource:
     url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:10001}/${DB_NAME:video}
     username: ${DB_USERNAME:postgres}

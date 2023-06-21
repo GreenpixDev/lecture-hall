@@ -16,7 +16,7 @@ import ru.hits.lecturehosting.hall.entity.id.MemberId;
 
 import java.time.LocalDateTime;
 
-@Table(name = "\"member\"")
+@Table(schema = "public", name = "member")
 @Entity
 @IdClass(MemberId.class)
 @Getter

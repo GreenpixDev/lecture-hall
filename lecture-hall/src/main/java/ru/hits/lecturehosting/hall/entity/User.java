@@ -15,7 +15,7 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Table(name = "\"user\"")
+@Table(schema = "public", name = "user")
 @Entity
 @Getter
 @Setter

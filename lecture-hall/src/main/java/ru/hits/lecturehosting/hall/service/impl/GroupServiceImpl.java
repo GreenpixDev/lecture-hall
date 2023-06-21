@@ -1,6 +1,7 @@
 package ru.hits.lecturehosting.hall.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,12 +50,25 @@ public class GroupServiceImpl implements GroupService {
     private final GroupPermissionService groupPermissionService;
 
     @Override
-    public PageDto<GroupDto> getGroups(UserPrincipal principal, int page, int size, SearchGroupDto dto) {
-        return pageMapper.toDto(groupRepository.searchAll(
-                principal.getId(),
-                "%" + (dto.getNameFilter() == null ? "" : dto.getNameFilter()) + "%",
-                PageRequest.of(page, size)
-        ).map(groupMapper::toDto));
+    public PageDto<GroupDto> getGroups(UserPrincipal principal, int pageNum, int size, SearchGroupDto dto) {
+        Page<Group> page;
+
+        if (dto.isAdministratorFilter()) {
+            page = groupRepository.searchAllIsAdmin(
+                    principal.getId(),
+                    "%" + (dto.getNameFilter() == null ? "" : dto.getNameFilter()) + "%",
+                    PageRequest.of(pageNum, size)
+            );
+        }
+        else {
+            page = groupRepository.searchAll(
+                    principal.getId(),
+                    "%" + (dto.getNameFilter() == null ? "" : dto.getNameFilter()) + "%",
+                    PageRequest.of(pageNum, size)
+            );
+        }
+
+        return pageMapper.toDto(page.map(groupMapper::toDto));
     }
 
     @Transactional

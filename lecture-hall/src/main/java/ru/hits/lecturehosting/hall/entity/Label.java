@@ -14,7 +14,7 @@ import lombok.Setter;
 
 import java.util.UUID;
 
-@Table(name = "\"label\"")
+@Table(schema = "public", name = "label")
 @Entity
 @Getter
 @Setter

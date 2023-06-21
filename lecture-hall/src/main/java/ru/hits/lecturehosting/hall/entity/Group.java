@@ -21,7 +21,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.UUID;
 
-@Table(name = "\"group\"")
+@Table(schema = "public", name = "group")
 @Entity
 @Getter
 @Setter

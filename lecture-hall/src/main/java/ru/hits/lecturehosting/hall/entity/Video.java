@@ -12,7 +12,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.UUID;
 
-@Table(name = "\"video\"")
+@Table(schema = "public", name = "video")
 @Entity
 @Getter
 @Setter
@@ -54,7 +54,7 @@ public class Video {
     private String playerUrl;
 
     @ManyToMany
-    @JoinTable(name = "\"video_labels\"",
+    @JoinTable(schema = "public", name = "video_label",
             joinColumns = @JoinColumn(name = "video_id"),
             inverseJoinColumns = @JoinColumn(name = "label_id"))
     @Builder.Default

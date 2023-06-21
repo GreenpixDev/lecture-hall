@@ -14,4 +14,6 @@ public class SearchGroupDto implements Serializable {
 
     private String nameFilter;
 
+    private boolean administratorFilter;
+
 }

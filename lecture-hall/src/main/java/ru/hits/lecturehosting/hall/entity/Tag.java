@@ -20,7 +20,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.UUID;
 
-@Table(name = "\"tag\"")
+@Table(schema = "public", name = "tag")
 @Entity
 @Getter
 @Setter

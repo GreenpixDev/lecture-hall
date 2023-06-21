@@ -15,4 +15,7 @@ public interface GroupRepository extends JpaRepository<Group, UUID>, JpaSpecific
     @Query("select g from Group g join g.members m where m.user.id = :memberId and g.name like :nameExpression")
     Page<Group> searchAll(UUID memberId, String nameExpression, Pageable pageable);
 
+    @Query("select g from Group g join g.members m where m.user.id = :memberId and m.administrator and g.name like :nameExpression")
+    Page<Group> searchAllIsAdmin(UUID memberId, String nameExpression, Pageable pageable);
+
 }

@@ -17,9 +17,7 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: update
-  flyway:
-    baseline-on-migrate: true
+      ddl-auto: validate
   rabbitmq:
     username: ${RABBITMQ_USERNAME:guest}
     password: ${RABBITMQ_PASSWORD:guest}

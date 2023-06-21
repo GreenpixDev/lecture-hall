@@ -12,7 +12,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.UUID;
 
-@Table(name = "\"subject\"")
+@Table(schema = "public", name = "subject")
 @Entity
 @Getter
 @Setter
