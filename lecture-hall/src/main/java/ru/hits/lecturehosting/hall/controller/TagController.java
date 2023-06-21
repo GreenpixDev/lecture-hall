@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.hits.lecturehosting.hall.SecurityConst;
+import ru.hits.lecturehosting.hall.config.jwt.JwtUser;
 import ru.hits.lecturehosting.hall.dto.PageDto;
 import ru.hits.lecturehosting.hall.dto.TagDto;
 import ru.hits.lecturehosting.hall.dto.search.SearchTagDto;
@@ -33,7 +34,7 @@ public class TagController {
     @SecurityRequirement(name = SecurityConst.BEARER)
     @PostMapping("groups/{groupId}/tags/search")
     public PageDto<TagDto> getTags(
-            @AuthenticationPrincipal UserPrincipal user,
+            @AuthenticationPrincipal JwtUser user,
             @PathVariable UUID groupId,
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "count", defaultValue = "20") int count,

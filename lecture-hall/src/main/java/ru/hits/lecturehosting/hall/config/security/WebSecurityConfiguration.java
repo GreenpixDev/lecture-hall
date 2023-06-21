@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.client.endpoint.DefaultAuthorizationCodeTokenResponseClient;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AccessTokenResponseClient;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest;
@@ -19,6 +20,9 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import ru.hits.lecturehosting.hall.config.jwt.JwtAuthenticationConverter;
 import ru.hits.lecturehosting.hall.config.jwt.JwtAuthenticationFilter;
 import ru.hits.lecturehosting.hall.config.jwt.JwtManager;
@@ -45,7 +49,9 @@ public class WebSecurityConfiguration {
             JwtManager jwtManager
     ) throws Exception {
         return http
-                .sessionManagement(AbstractHttpConfigurer::disable)
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
                 .exceptionHandling(exceptionHandling -> exceptionHandling
                         .authenticationEntryPoint(new HttpStatusSuccessEntryPoint(HttpStatus.UNAUTHORIZED))
                 )
@@ -59,7 +65,9 @@ public class WebSecurityConfiguration {
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
-                .cors(AbstractHttpConfigurer::disable)
+                .cors(cors -> cors
+                        .configurationSource(corsConfiguration())
+                )
                 .csrf(csrf -> csrf
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                         .disable() // TODO убрать
@@ -92,4 +100,15 @@ public class WebSecurityConfiguration {
         return accessTokenResponseClient;
     }
 
+    @Bean
+    public CorsConfigurationSource corsConfiguration() {
+        CorsConfiguration corsConfig = new CorsConfiguration();
+        corsConfig.applyPermitDefaultValues();
+        corsConfig.addAllowedHeader("*");
+        corsConfig.addAllowedMethod("*");
+        corsConfig.addAllowedOrigin("*");
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", corsConfig);
+        return source;
+    }
 }

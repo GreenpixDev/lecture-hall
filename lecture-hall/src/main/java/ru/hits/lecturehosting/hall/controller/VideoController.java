@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.hits.lecturehosting.hall.SecurityConst;
+import ru.hits.lecturehosting.hall.config.jwt.JwtUser;
 import ru.hits.lecturehosting.hall.dto.PageDto;
 import ru.hits.lecturehosting.hall.dto.UploadVideoDto;
 import ru.hits.lecturehosting.hall.dto.VideoDto;
@@ -38,7 +39,7 @@ public class VideoController {
     @SecurityRequirement(name = SecurityConst.BEARER)
     @PostMapping("groups/{groupId}/videos/search")
     public PageDto<VideoDto> getGroupVideos(
-            @AuthenticationPrincipal UserPrincipal user,
+            @AuthenticationPrincipal JwtUser user,
             @PathVariable UUID groupId,
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "count", defaultValue = "20") int count,
@@ -51,7 +52,7 @@ public class VideoController {
     @SecurityRequirement(name = SecurityConst.BEARER)
     @GetMapping("videos/{videoId}")
     public VideoDto getVideo(
-            @AuthenticationPrincipal UserPrincipal user,
+            @AuthenticationPrincipal JwtUser user,
             @PathVariable UUID videoId
     ) {
         return videoService.getVideo(user, videoId);
@@ -62,7 +63,7 @@ public class VideoController {
     @SecurityRequirement(name = SecurityConst.BEARER)
     @PostMapping("groups/{groupId}/videos/new")
     public UploadVideoDto createGroupVideo(
-            @AuthenticationPrincipal UserPrincipal user,
+            @AuthenticationPrincipal JwtUser user,
             @PathVariable UUID groupId,
             @RequestBody CreationVideoDto dto
     ) {
@@ -73,7 +74,7 @@ public class VideoController {
     @SecurityRequirement(name = SecurityConst.BEARER)
     @PutMapping("videos/{videoId}")
     public void updateVideo(
-            @AuthenticationPrincipal UserPrincipal user,
+            @AuthenticationPrincipal JwtUser user,
             @PathVariable UUID videoId,
             @RequestBody UpdateVideoDto dto
     ) {
@@ -84,7 +85,7 @@ public class VideoController {
     @SecurityRequirement(name = SecurityConst.BEARER)
     @DeleteMapping("videos/{videoId}")
     public void deleteVideo(
-            @AuthenticationPrincipal UserPrincipal user,
+            @AuthenticationPrincipal JwtUser user,
             @PathVariable UUID videoId
     ) {
         videoService.deleteVideo(user, videoId);

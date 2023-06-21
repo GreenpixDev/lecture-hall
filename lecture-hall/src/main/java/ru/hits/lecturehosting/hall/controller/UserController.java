@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.hits.lecturehosting.hall.SecurityConst;
+import ru.hits.lecturehosting.hall.config.jwt.JwtUser;
 import ru.hits.lecturehosting.hall.dto.UserDto;
 import ru.hits.lecturehosting.hall.service.GroupService;
 import ru.hits.lecturehosting.hall.service.UserService;
@@ -27,7 +28,7 @@ public class UserController {
     @SecurityRequirement(name = SecurityConst.BEARER)
     @GetMapping("me")
     public UserDto getAboutMe(
-            @AuthenticationPrincipal UserPrincipal user
+            @AuthenticationPrincipal JwtUser user
     ) {
         return userService.getUser(user);
     }

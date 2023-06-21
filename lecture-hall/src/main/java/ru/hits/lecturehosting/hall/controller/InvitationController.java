@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.hits.lecturehosting.hall.SecurityConst;
+import ru.hits.lecturehosting.hall.config.jwt.JwtUser;
 import ru.hits.lecturehosting.hall.dto.CreatedInvitationDto;
 import ru.hits.lecturehosting.hall.dto.InvitationDto;
 import ru.hits.lecturehosting.hall.dto.PageDto;
@@ -38,7 +39,7 @@ public class InvitationController {
     @SecurityRequirement(name = SecurityConst.BEARER)
     @GetMapping("groups/{groupId}/invitations")
     public PageDto<InvitationDto> getGroupInvitations(
-            @AuthenticationPrincipal UserPrincipal user,
+            @AuthenticationPrincipal JwtUser user,
             @PathVariable UUID groupId,
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "count", defaultValue = "20") int count
@@ -51,7 +52,7 @@ public class InvitationController {
     @SecurityRequirement(name = SecurityConst.BEARER)
     @PostMapping("groups/{groupId}/invitations/new")
     public CreatedInvitationDto createInvitation(
-            @AuthenticationPrincipal UserPrincipal user,
+            @AuthenticationPrincipal JwtUser user,
             @PathVariable UUID groupId,
             @RequestBody CreationInvitationDto dto
     ) {
@@ -62,7 +63,7 @@ public class InvitationController {
     @SecurityRequirement(name = SecurityConst.BEARER)
     @PutMapping("invitations/{invitationId}")
     public void updateInvitation(
-            @AuthenticationPrincipal UserPrincipal user,
+            @AuthenticationPrincipal JwtUser user,
             @PathVariable UUID invitationId,
             @RequestBody UpdateInvitationDto dto
     ) {
@@ -73,7 +74,7 @@ public class InvitationController {
     @SecurityRequirement(name = SecurityConst.BEARER)
     @DeleteMapping("invitations/{invitationId}")
     public void deleteInvitation(
-            @AuthenticationPrincipal UserPrincipal user,
+            @AuthenticationPrincipal JwtUser user,
             @PathVariable UUID invitationId
     ) {
         invitationService.deleteInvitation(user, invitationId);

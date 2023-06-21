@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.hits.lecturehosting.hall.SecurityConst;
+import ru.hits.lecturehosting.hall.config.jwt.JwtUser;
 import ru.hits.lecturehosting.hall.dto.MemberDto;
 import ru.hits.lecturehosting.hall.dto.PageDto;
 import ru.hits.lecturehosting.hall.dto.search.SearchMemberDto;
@@ -38,7 +39,7 @@ public class MemberController {
     @SecurityRequirement(name = SecurityConst.BEARER)
     @PostMapping("search")
     public PageDto<MemberDto> getGroupMembers(
-            @AuthenticationPrincipal UserPrincipal user,
+            @AuthenticationPrincipal JwtUser user,
             @PathVariable UUID groupId,
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "count", defaultValue = "20") int count,
@@ -51,7 +52,7 @@ public class MemberController {
     @SecurityRequirement(name = SecurityConst.BEARER)
     @PutMapping("{userId}")
     public void updateGroupMembers(
-            @AuthenticationPrincipal UserPrincipal user,
+            @AuthenticationPrincipal JwtUser user,
             @PathVariable UUID groupId,
             @PathVariable UUID userId,
             @RequestBody UpdateMemberDto dto
@@ -63,7 +64,7 @@ public class MemberController {
     @SecurityRequirement(name = SecurityConst.BEARER)
     @DeleteMapping("{userId}")
     public void kickGroupMembers(
-            @AuthenticationPrincipal UserPrincipal user,
+            @AuthenticationPrincipal JwtUser user,
             @PathVariable UUID groupId,
             @PathVariable UUID userId
     ) {

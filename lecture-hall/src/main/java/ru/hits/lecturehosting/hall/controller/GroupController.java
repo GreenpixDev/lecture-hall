@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.hits.lecturehosting.hall.SecurityConst;
+import ru.hits.lecturehosting.hall.config.jwt.JwtUser;
 import ru.hits.lecturehosting.hall.dto.GroupDto;
 import ru.hits.lecturehosting.hall.dto.special.JoiningGroupDto;
 import ru.hits.lecturehosting.hall.dto.PageDto;
@@ -37,7 +38,7 @@ public class GroupController {
     @SecurityRequirement(name = SecurityConst.BEARER)
     @PostMapping("search")
     public PageDto<GroupDto> getGroups(
-            @AuthenticationPrincipal UserPrincipal user,
+            @AuthenticationPrincipal JwtUser user,
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "count", defaultValue = "20") int count,
             @RequestBody SearchGroupDto dto
@@ -49,7 +50,7 @@ public class GroupController {
     @SecurityRequirement(name = SecurityConst.BEARER)
     @PostMapping("new")
     public void createGroup(
-            @AuthenticationPrincipal UserPrincipal user,
+            @AuthenticationPrincipal JwtUser user,
             @RequestBody CreationGroupDto dto
     ) {
         groupService.createGroup(user, dto);
@@ -59,7 +60,7 @@ public class GroupController {
     @SecurityRequirement(name = SecurityConst.BEARER)
     @PutMapping("{groupId}")
     public void updateGroup(
-            @AuthenticationPrincipal UserPrincipal user,
+            @AuthenticationPrincipal JwtUser user,
             @PathVariable UUID groupId,
             @RequestBody UpdateGroupDto dto
     ) {
@@ -70,7 +71,7 @@ public class GroupController {
     @SecurityRequirement(name = SecurityConst.BEARER)
     @DeleteMapping("{groupId}")
     public void deleteGroup(
-            @AuthenticationPrincipal UserPrincipal user,
+            @AuthenticationPrincipal JwtUser user,
             @PathVariable UUID groupId
     ) {
         groupService.deleteGroup(user, groupId);
@@ -82,7 +83,7 @@ public class GroupController {
     @SecurityRequirement(name = SecurityConst.BEARER)
     @PostMapping("entrance")
     public void joinToGroup(
-            @AuthenticationPrincipal UserPrincipal user,
+            @AuthenticationPrincipal JwtUser user,
             @RequestBody JoiningGroupDto dto
     ) {
         groupService.joinToGroup(user, dto);
@@ -93,7 +94,7 @@ public class GroupController {
     @SecurityRequirement(name = SecurityConst.BEARER)
     @PostMapping("{groupId}/exit")
     public void quitFromGroup(
-            @AuthenticationPrincipal UserPrincipal user,
+            @AuthenticationPrincipal JwtUser user,
             @PathVariable UUID groupId
     ) {
         groupService.quitFromGroup(user, groupId);

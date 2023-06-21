@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.hits.lecturehosting.hall.SecurityConst;
+import ru.hits.lecturehosting.hall.config.jwt.JwtUser;
 import ru.hits.lecturehosting.hall.dto.PageDto;
 import ru.hits.lecturehosting.hall.dto.SubjectDto;
 import ru.hits.lecturehosting.hall.dto.create.CreationSubjectDto;
@@ -36,7 +37,7 @@ public class SubjectController {
     @SecurityRequirement(name = SecurityConst.BEARER)
     @PostMapping("groups/{groupId}/subjects/search")
     public PageDto<SubjectDto> getSubjects(
-            @AuthenticationPrincipal UserPrincipal user,
+            @AuthenticationPrincipal JwtUser user,
             @PathVariable UUID groupId,
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "count", defaultValue = "20") int count,
@@ -50,7 +51,7 @@ public class SubjectController {
     @SecurityRequirement(name = SecurityConst.BEARER)
     @PostMapping("groups/{groupId}/subjects/new")
     public void createSubject(
-            @AuthenticationPrincipal UserPrincipal user,
+            @AuthenticationPrincipal JwtUser user,
             @PathVariable UUID groupId,
             @RequestBody CreationSubjectDto dto
     ) {
@@ -61,7 +62,7 @@ public class SubjectController {
     @SecurityRequirement(name = SecurityConst.BEARER)
     @PutMapping("subjects/{subjectId}")
     public void updateSubject(
-            @AuthenticationPrincipal UserPrincipal user,
+            @AuthenticationPrincipal JwtUser user,
             @PathVariable UUID subjectId,
             @RequestBody UpdateSubjectDto dto
     ) {
@@ -72,7 +73,7 @@ public class SubjectController {
     @SecurityRequirement(name = SecurityConst.BEARER)
     @DeleteMapping("subjects/{subjectId}")
     public void deleteSubject(
-            @AuthenticationPrincipal UserPrincipal user,
+            @AuthenticationPrincipal JwtUser user,
             @PathVariable UUID subjectId
     ) {
         subjectService.deleteSubject(user, subjectId);
