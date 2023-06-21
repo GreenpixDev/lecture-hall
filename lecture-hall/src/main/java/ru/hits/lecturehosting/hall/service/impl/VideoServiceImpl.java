@@ -159,7 +159,7 @@ public class VideoServiceImpl implements VideoService {
         Video video = videoRepository.findById(videoId)
                 .orElseThrow(VideoNotFoundException::new);
 
-        groupPermissionService.checkPermission(principal, video.getGroup());
+        groupPermissionService.checkAdminPermission(principal, video.getGroup());
 
         videoRepository.delete(video);
     }

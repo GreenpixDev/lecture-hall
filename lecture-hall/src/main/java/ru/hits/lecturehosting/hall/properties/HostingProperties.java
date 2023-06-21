@@ -7,7 +7,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Data
 public class HostingProperties {
 
-    private final String url;
+    private final String innerUrl;
+    private final String outerUrl;
 
     private final String accessToken;
 

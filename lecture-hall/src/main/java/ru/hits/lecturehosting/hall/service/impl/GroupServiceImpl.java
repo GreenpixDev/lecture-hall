@@ -115,7 +115,7 @@ public class GroupServiceImpl implements GroupService {
     @Transactional
     @Override
     public void deleteGroup(UserPrincipal principal, UUID groupId) {
-        groupPermissionService.checkAdminPermission(principal, groupId);
+        groupPermissionService.checkOwnerPermission(principal, groupId);
 
         groupRepository.deleteById(groupId);
     }

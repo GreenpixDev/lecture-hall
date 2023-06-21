@@ -53,7 +53,7 @@ public class InvitationServiceImpl implements InvitationService {
     public InvitationDto getInvitation(UserPrincipal principal, UUID invitationId) {
         Invitation invitation = invitationRepository.findById(invitationId)
                 .orElseThrow(GroupNotFoundException::new);
-        groupPermissionService.checkPermission(principal, invitation.getGroup());
+        groupPermissionService.checkAdminPermission(principal, invitation.getGroup());
         return invitationMapper.toDto(invitation);
     }
 

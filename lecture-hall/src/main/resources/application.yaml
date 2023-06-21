@@ -61,7 +61,8 @@ springdoc:
 
 integration:
   hosting:
-    url: ${HOSTING_URL:http://localhost:8001}
+    inner-url: ${INNER_HOSTING_URL:http://localhost:8001}
+    outer-url: ${OUTER_HOSTING_URL:http://localhost:8001}
     access-token: "a"
   frontend:
     success-url: ${FRONTEND_URL:http://localhost:8000/swagger}

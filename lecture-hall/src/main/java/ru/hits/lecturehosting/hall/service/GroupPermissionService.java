@@ -10,6 +10,12 @@ import java.util.UUID;
 
 public interface GroupPermissionService {
 
+    default void checkOwnerPermission(UserPrincipal principal, Group group) {
+        checkAdminPermission(principal, group.getId());
+    }
+
+    void checkOwnerPermission(UserPrincipal principal, UUID groupId);
+
     default void checkAdminPermission(UserPrincipal principal, Group group) {
         checkAdminPermission(principal, group.getId());
     }
