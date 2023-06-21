@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.hits.lecturehosting.hall.dto.PageDto;
+import ru.hits.lecturehosting.hall.dto.TagDto;
 import ru.hits.lecturehosting.hall.dto.UploadVideoDto;
 import ru.hits.lecturehosting.hall.dto.VideoDto;
 import ru.hits.lecturehosting.hall.dto.amqp.AmqpVideoUpdateDto;
@@ -38,6 +39,7 @@ import ru.hits.lecturehosting.hall.service.VkApiService;
 import ru.hits.lecturehosting.hall.util.UserPrincipal;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -64,15 +66,16 @@ public class VideoServiceImpl implements VideoService {
         groupPermissionService.checkPermission(principal, groupId);
 
         // TODO п... костыль
+        List<UsingTagDto> tagDtoList = dto.getTagFilter() == null ? Collections.emptyList() : dto.getTagFilter();
         List<Label> labels = new ArrayList<>();
-        for (UsingTagDto tagDto : dto.getTagFilter()) {
+        for (UsingTagDto tagDto : tagDtoList) {
             for (String value : tagDto.getValues()) {
                 labels.add(labelRepository.findByKeyNameAndValue(tagDto.getKey(), value));
             }
         }
 
         Page<Video> page;
-        if (dto.getSubjectFilter() == null) {
+        if (dto.getSubjectFilter() == null || dto.getSubjectFilter().size() == 0) {
             page = videoRepository.searchAll(
                     groupId,
                     "%" + (dto.getTextFilter() == null ? "" : dto.getTextFilter()) + "%",
