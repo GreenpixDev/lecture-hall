@@ -1,6 +1,7 @@
 package ru.hits.lecturehosting.hall.service;
 
 import ru.hits.lecturehosting.hall.dto.CreatedInvitationDto;
+import ru.hits.lecturehosting.hall.dto.GroupDto;
 import ru.hits.lecturehosting.hall.dto.InvitationDto;
 import ru.hits.lecturehosting.hall.dto.PageDto;
 import ru.hits.lecturehosting.hall.dto.create.CreationInvitationDto;
@@ -12,6 +13,8 @@ import java.util.UUID;
 public interface InvitationService {
 
     PageDto<InvitationDto> getGroupInvitations(UserPrincipal principal, UUID groupId, int page, int size);
+
+    InvitationDto getInvitation(UserPrincipal principal, UUID invitationId);
 
     CreatedInvitationDto createGroupInvitation(UserPrincipal principal, UUID groupId, CreationInvitationDto dto);
 

@@ -18,6 +18,8 @@ public interface SubjectService {
 
     PageDto<SubjectDto> getGroupSubjects(UserPrincipal principal, UUID groupId, int page, int size, SearchSubjectDto dto);
 
+    SubjectDto getSubject(UserPrincipal principal, UUID subjectId);
+
     void createGroupSubject(UserPrincipal principal, UUID groupId, CreationSubjectDto dto);
 
     void updateSubject(UserPrincipal principal, UUID subjectId, UpdateSubjectDto dto);

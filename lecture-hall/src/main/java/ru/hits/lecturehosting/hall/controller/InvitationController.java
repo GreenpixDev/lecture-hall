@@ -47,6 +47,17 @@ public class InvitationController {
         return invitationService.getGroupInvitations(user, groupId, page - 1, count);
     }
 
+
+    @Operation(summary = "Информация о приглашении")
+    @SecurityRequirement(name = SecurityConst.BEARER)
+    @GetMapping("invitations/{invitationId}")
+    public InvitationDto getGroupInvitations(
+            @AuthenticationPrincipal JwtUser user,
+            @PathVariable UUID invitationId
+    ) {
+        return invitationService.getInvitation(user, invitationId);
+    }
+
     @Tag(name = "group")
     @Operation(summary = "Создание приглашения в группе")
     @SecurityRequirement(name = SecurityConst.BEARER)

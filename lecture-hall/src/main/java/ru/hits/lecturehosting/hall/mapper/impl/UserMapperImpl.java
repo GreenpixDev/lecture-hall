@@ -12,6 +12,7 @@ public class UserMapperImpl implements UserMapper {
     public UserDto toDto(User user) {
         return new UserDto(
                 user.getId(),
+                user.getName(),
                 user.getVkId()
         );
     }

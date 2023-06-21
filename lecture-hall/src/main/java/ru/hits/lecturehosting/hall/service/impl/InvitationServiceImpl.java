@@ -49,6 +49,14 @@ public class InvitationServiceImpl implements InvitationService {
         ).map(invitationMapper::toDto));
     }
 
+    @Override
+    public InvitationDto getInvitation(UserPrincipal principal, UUID invitationId) {
+        Invitation invitation = invitationRepository.findById(invitationId)
+                .orElseThrow(GroupNotFoundException::new);
+        groupPermissionService.checkPermission(principal, invitation.getGroup());
+        return invitationMapper.toDto(invitation);
+    }
+
     @Transactional
     @Override
     public CreatedInvitationDto createGroupInvitation(UserPrincipal principal, UUID groupId, CreationInvitationDto dto) {

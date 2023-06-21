@@ -14,6 +14,8 @@ public interface GroupService {
 
     PageDto<GroupDto> getGroups(UserPrincipal principal, int page, int size, SearchGroupDto dto);
 
+    GroupDto getGroup(UserPrincipal principal, UUID groupId);
+
     void createGroup(UserPrincipal principal, CreationGroupDto dto);
 
     void updateGroup(UserPrincipal principal, UUID groupId, UpdateGroupDto dto);

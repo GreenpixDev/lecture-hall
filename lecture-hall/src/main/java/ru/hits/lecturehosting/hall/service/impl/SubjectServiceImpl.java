@@ -48,6 +48,14 @@ public class SubjectServiceImpl implements SubjectService {
         ).map(subjectMapper::toDto));
     }
 
+    @Override
+    public SubjectDto getSubject(UserPrincipal principal, UUID subjectId) {
+        Subject subject = subjectRepository.findById(subjectId)
+                .orElseThrow(GroupNotFoundException::new);
+        groupPermissionService.checkPermission(principal, subject.getGroup());
+        return subjectMapper.toDto(subject);
+    }
+
     @Transactional
     @Override
     public void createGroupSubject(UserPrincipal principal, UUID groupId, CreationSubjectDto dto) {

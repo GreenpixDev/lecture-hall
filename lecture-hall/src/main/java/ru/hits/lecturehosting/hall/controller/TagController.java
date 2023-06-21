@@ -43,4 +43,14 @@ public class TagController {
         return tagService.getGroupTags(user, groupId, page - 1, count, dto);
     }
 
+    @Operation(summary = "Информация о теге")
+    @SecurityRequirement(name = SecurityConst.BEARER)
+    @PostMapping("tags/{tagId}")
+    public TagDto getTags(
+            @AuthenticationPrincipal JwtUser user,
+            @PathVariable UUID tagId
+    ) {
+        return tagService.getTag(user, tagId);
+    }
+
 }

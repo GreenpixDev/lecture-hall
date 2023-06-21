@@ -73,6 +73,13 @@ public class GroupServiceImpl implements GroupService {
 
     @Transactional
     @Override
+    public GroupDto getGroup(UserPrincipal principal, UUID groupId) {
+        groupPermissionService.checkPermission(principal, groupId);
+        return groupMapper.toDto(groupRepository.findById(groupId).orElseThrow(GroupNotFoundException::new));
+    }
+
+    @Transactional
+    @Override
     public void createGroup(UserPrincipal principal, CreationGroupDto dto) {
         User owner = userRepository.findById(principal.getId())
                 .orElseThrow(UnauthorizedException::new);

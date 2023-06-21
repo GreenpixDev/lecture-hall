@@ -46,6 +46,16 @@ public class SubjectController {
         return subjectService.getGroupSubjects(user, groupId, page - 1, count, dto);
     }
 
+    @Operation(summary = "Информация о предмете")
+    @SecurityRequirement(name = SecurityConst.BEARER)
+    @PostMapping("subjects/{subjectId}")
+    public SubjectDto getSubjects(
+            @AuthenticationPrincipal JwtUser user,
+            @PathVariable UUID subjectId
+    ) {
+        return subjectService.getSubject(user, subjectId);
+    }
+
     @Tag(name = "group")
     @Operation(summary = "Создание предмета в группе")
     @SecurityRequirement(name = SecurityConst.BEARER)

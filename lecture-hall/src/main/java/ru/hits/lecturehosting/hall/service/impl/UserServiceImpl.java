@@ -30,7 +30,16 @@ public class UserServiceImpl implements UserService {
         String firstName = oAuth2User.getAttribute("first_name");
         String lastName = oAuth2User.getAttribute("last_name");
         String name = lastName + " " + firstName;
-        return userRepository.findByVkId(vkId).orElseGet(() -> createUser(vkId, name));
+
+        User user = userRepository.findByVkId(vkId).orElse(null);
+        User updatedUser = User.builder()
+                .vkId(vkId)
+                .name(name)
+                .build();
+        if (user != null) {
+            updatedUser.setId(user.getId());
+        }
+        return userRepository.save(updatedUser);
     }
 
     @Override
@@ -40,11 +49,4 @@ public class UserServiceImpl implements UserService {
         return userMapper.toDto(user);
     }
 
-    private User createUser(Integer vkId, String name) {
-        return userRepository.save(User.builder()
-                .vkId(vkId)
-                .name(name)
-                .build()
-        );
-    }
 }

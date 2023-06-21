@@ -7,6 +7,9 @@ import org.springframework.stereotype.Service;
 import ru.hits.lecturehosting.hall.dto.PageDto;
 import ru.hits.lecturehosting.hall.dto.TagDto;
 import ru.hits.lecturehosting.hall.dto.search.SearchTagDto;
+import ru.hits.lecturehosting.hall.entity.Subject;
+import ru.hits.lecturehosting.hall.entity.Tag;
+import ru.hits.lecturehosting.hall.exception.GroupNotFoundException;
 import ru.hits.lecturehosting.hall.mapper.PageMapper;
 import ru.hits.lecturehosting.hall.mapper.TagMapper;
 import ru.hits.lecturehosting.hall.repository.TagRepository;
@@ -36,5 +39,13 @@ public class TagServiceImpl implements TagService {
                 "%" + (dto.getNameFilter() == null ? "" : dto.getNameFilter()) + "%",
                 PageRequest.of(page, size)
         ).map(tagMapper::toDto));
+    }
+
+    @Override
+    public TagDto getTag(UserPrincipal principal, UUID tagId) {
+        Tag tag = tagRepository.findById(tagId)
+                .orElseThrow(GroupNotFoundException::new);
+        groupPermissionService.checkPermission(principal, tag.getGroup());
+        return tagMapper.toDto(tag);
     }
 }
