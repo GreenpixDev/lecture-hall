@@ -27,7 +27,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public User saveUserIfNotExists(OAuth2User oAuth2User) {
         Integer vkId = oAuth2User.getAttribute("id");
-        return userRepository.findByVkId(vkId).orElseGet(() -> createUser(vkId));
+        String firstName = oAuth2User.getAttribute("first_name");
+        String lastName = oAuth2User.getAttribute("last_name");
+        String name = lastName + " " + firstName;
+        return userRepository.findByVkId(vkId).orElseGet(() -> createUser(vkId, name));
     }
 
     @Override
@@ -37,10 +40,11 @@ public class UserServiceImpl implements UserService {
         return userMapper.toDto(user);
     }
 
-    private User createUser(Integer vkId) {
-        User user = new User();
-        user.setVkId(vkId);
-        user.setRegistrationDateTime(LocalDateTime.now());
-        return userRepository.save(user);
+    private User createUser(Integer vkId, String name) {
+        return userRepository.save(User.builder()
+                .vkId(vkId)
+                .name(name)
+                .build()
+        );
     }
 }

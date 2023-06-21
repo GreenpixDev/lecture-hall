@@ -4,6 +4,7 @@ import com.vk.api.sdk.objects.responses.VideoUploadResponse;
 import com.vk.api.sdk.objects.video.VideoFull;
 import com.vk.api.sdk.objects.video.responses.SaveResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,9 +14,12 @@ import ru.hits.lecturehosting.hall.dto.VideoDto;
 import ru.hits.lecturehosting.hall.dto.amqp.AmqpVideoUpdateDto;
 import ru.hits.lecturehosting.hall.dto.create.CreationVideoDto;
 import ru.hits.lecturehosting.hall.dto.search.SearchVideoDto;
+import ru.hits.lecturehosting.hall.dto.special.UsingTagDto;
 import ru.hits.lecturehosting.hall.dto.update.UpdateVideoDto;
 import ru.hits.lecturehosting.hall.entity.Group;
+import ru.hits.lecturehosting.hall.entity.Label;
 import ru.hits.lecturehosting.hall.entity.Subject;
+import ru.hits.lecturehosting.hall.entity.Tag;
 import ru.hits.lecturehosting.hall.entity.Video;
 import ru.hits.lecturehosting.hall.exception.GroupNotFoundException;
 import ru.hits.lecturehosting.hall.exception.SubjectNotFoundException;
@@ -23,7 +27,9 @@ import ru.hits.lecturehosting.hall.exception.VideoNotFoundException;
 import ru.hits.lecturehosting.hall.mapper.PageMapper;
 import ru.hits.lecturehosting.hall.mapper.VideoMapper;
 import ru.hits.lecturehosting.hall.repository.GroupRepository;
+import ru.hits.lecturehosting.hall.repository.LabelRepository;
 import ru.hits.lecturehosting.hall.repository.SubjectRepository;
+import ru.hits.lecturehosting.hall.repository.TagRepository;
 import ru.hits.lecturehosting.hall.repository.VideoRepository;
 import ru.hits.lecturehosting.hall.service.GroupPermissionService;
 import ru.hits.lecturehosting.hall.service.HostingService;
@@ -31,6 +37,9 @@ import ru.hits.lecturehosting.hall.service.VideoService;
 import ru.hits.lecturehosting.hall.service.VkApiService;
 import ru.hits.lecturehosting.hall.util.UserPrincipal;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -40,6 +49,7 @@ public class VideoServiceImpl implements VideoService {
     private final VideoRepository videoRepository;
     private final GroupRepository groupRepository;
     private final SubjectRepository subjectRepository;
+    private final LabelRepository labelRepository;
 
     private final PageMapper pageMapper;
     private final VideoMapper videoMapper;
@@ -49,14 +59,39 @@ public class VideoServiceImpl implements VideoService {
     private final HostingService hostingService;
 
     @Override
-    public PageDto<VideoDto> getGroupVideos(UserPrincipal principal, UUID groupId, int page, int size, SearchVideoDto dto) {
+    public PageDto<VideoDto> getGroupVideos(UserPrincipal principal, UUID groupId, int pageNum, int size, SearchVideoDto dto) {
         groupPermissionService.checkPermission(principal, groupId);
-        return pageMapper.toDto(videoRepository.searchAll(
-                groupId,
-                // TODO query
-                "%" + (dto.getTextFilter() == null ? "" : dto.getTextFilter()) + "%",
-                PageRequest.of(page, size)
-        ).map(videoMapper::toDto));
+
+        // TODO п... костыль
+        List<Label> labels = new ArrayList<>();
+        for (UsingTagDto tagDto : dto.getTagFilter()) {
+            for (String value : tagDto.getValues()) {
+                labels.add(labelRepository.findByKeyNameAndValue(tagDto.getKey(), value));
+            }
+        }
+
+        Page<Video> page;
+        if (dto.getSubjectFilter() == null) {
+            page = videoRepository.searchAll(
+                    groupId,
+                    "%" + (dto.getTextFilter() == null ? "" : dto.getTextFilter()) + "%",
+                    labels,
+                    labels.size(),
+                    PageRequest.of(pageNum, size)
+            );
+        }
+        else {
+            page = videoRepository.searchAllBySubjectId(
+                    groupId,
+                    "%" + (dto.getTextFilter() == null ? "" : dto.getTextFilter()) + "%",
+                    labels,
+                    labels.size(),
+                    dto.getSubjectFilter(),
+                    PageRequest.of(pageNum, size)
+            );
+        }
+
+        return pageMapper.toDto(page.map(videoMapper::toDto));
     }
 
     @Override

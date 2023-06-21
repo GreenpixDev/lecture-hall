@@ -12,4 +12,6 @@ public class GroupDto implements Serializable {
 
     private final String name;
 
+    private final UserDto owner;
+
 }

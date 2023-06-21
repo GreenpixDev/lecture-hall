@@ -29,6 +29,9 @@ public class User {
     @Column(name = "id", nullable = false)
     private UUID id;
 
+    @Column(name = "name", nullable = false)
+    private String name;
+
     @Column(name = "vk_id", nullable = false, unique = true)
     private Integer vkId;
 

@@ -11,6 +11,9 @@ public class UserDto implements Serializable {
 
     private final UUID id;
 
+    @Schema(description = "Имя пользователя (обычно из VK)")
+    private final String name;
+
     @Schema(description = "Идентификатор пользователя в VK")
     private final Integer vkId;
 
