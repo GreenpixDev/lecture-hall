@@ -59,7 +59,6 @@ public class VideoMapperImpl implements VideoMapper {
                 .title(dto.getTitle())
                 .description(dto.getDescription())
                 .recordingDateTime(dto.getRecordingDateTime())
-                // TODO .labels()
                 .build();
     }
 
@@ -70,9 +69,6 @@ public class VideoMapperImpl implements VideoMapper {
         }
         if (dto.getDescription() != null) {
             video.setDescription(dto.getDescription());
-        }
-        if (dto.getTags() != null) {
-            // TODO
         }
         return video;
     }

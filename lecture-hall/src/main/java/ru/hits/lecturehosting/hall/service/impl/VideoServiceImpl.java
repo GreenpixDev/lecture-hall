@@ -41,6 +41,7 @@ import ru.hits.lecturehosting.hall.util.UserPrincipal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
@@ -59,6 +60,7 @@ public class VideoServiceImpl implements VideoService {
     private final GroupPermissionService groupPermissionService;
     private final VkApiService vkApiService;
     private final HostingService hostingService;
+    private final TagRepository tagRepository;
 
     @Transactional
     @Override
@@ -70,7 +72,8 @@ public class VideoServiceImpl implements VideoService {
         List<Label> labels = new ArrayList<>();
         for (UsingTagDto tagDto : tagDtoList) {
             for (String value : tagDto.getValues()) {
-                labels.add(labelRepository.findByKeyNameAndValue(tagDto.getKey(), value));
+                labelRepository.findByKeyNameAndValue(tagDto.getKey(), value)
+                        .ifPresent(labels::add);
             }
         }
 
@@ -117,15 +120,36 @@ public class VideoServiceImpl implements VideoService {
         Group group = groupRepository.findById(groupId)
                 .orElseThrow(GroupNotFoundException::new);
 
+        SaveResponse response = vkApiService.createVideo(dto.getTitle(), dto.getDescription());
+        String uploadUrl = hostingService.generateVideoUploadUrl(response.getUploadUrl().toString());
+
         Subject subject = subjectRepository.findById(dto.getSubjectId())
                 .filter(e -> e.getGroup().getId().equals(groupId))
                 .orElseThrow(SubjectNotFoundException::new);
 
-        SaveResponse response = vkApiService.createVideo(dto.getTitle(), dto.getDescription());
-        String uploadUrl = hostingService.generateVideoUploadUrl(response.getUploadUrl().toString());
+        List<UsingTagDto> tagDtoList = dto.getTags() == null ? Collections.emptyList() : dto.getTags();
+        List<Label> labels = new ArrayList<>();
+        for (UsingTagDto tagDto : tagDtoList) {
+            Tag tag = null;
+            boolean tagInitialized = false;
+            for (String value : tagDto.getValues()) {
+                Label label = labelRepository.findByKeyNameAndValue(tagDto.getKey(), value).orElse(null);
+                if (label == null) {
+                    if (!tagInitialized) {
+                        tag = tagRepository.findByName(tagDto.getKey()).orElse(null);
+                        tagInitialized = true;
+                    }
+                    if (tag == null) {
+                        tag = tagRepository.save(Tag.builder().group(group).name(tagDto.getKey()).build());
+                    }
+                    label = labelRepository.save(Label.builder().key(tag).value(value).build());
+                }
+                labels.add(label);
+            }
+        }
 
         Video video = videoMapper.toEntity(dto);
-        // TODO check mapper
+        video.getLabels().addAll(labels);
         video.setSubject(subject);
         video.setGroup(group);
         video.setVkId(response.getVideoId());
@@ -149,7 +173,9 @@ public class VideoServiceImpl implements VideoService {
                     .orElseThrow(SubjectNotFoundException::new);
             updatedVideo.setSubject(subject);
         }
-        // TODO check mapper
+
+        // TODO tags
+
         videoRepository.save(updatedVideo);
     }
 
