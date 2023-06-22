@@ -174,7 +174,30 @@ public class VideoServiceImpl implements VideoService {
             updatedVideo.setSubject(subject);
         }
 
-        // TODO tags
+        if (dto.getTags() != null) {
+            List<UsingTagDto> tagDtoList = dto.getTags();
+            List<Label> labels = new ArrayList<>();
+            for (UsingTagDto tagDto : tagDtoList) {
+                Tag tag = null;
+                boolean tagInitialized = false;
+                for (String value : tagDto.getValues()) {
+                    Label label = labelRepository.findByKeyNameAndValue(tagDto.getKey(), value).orElse(null);
+                    if (label == null) {
+                        if (!tagInitialized) {
+                            tag = tagRepository.findByName(tagDto.getKey()).orElse(null);
+                            tagInitialized = true;
+                        }
+                        if (tag == null) {
+                            tag = tagRepository.save(Tag.builder().group(video.getGroup()).name(tagDto.getKey()).build());
+                        }
+                        label = labelRepository.save(Label.builder().key(tag).value(value).build());
+                    }
+                    labels.add(label);
+                }
+            }
+            updatedVideo.getLabels().clear();
+            updatedVideo.getLabels().addAll(labels);
+        }
 
         videoRepository.save(updatedVideo);
     }
